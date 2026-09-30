@@ -1,0 +1,1007 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ray Hart · The Whole Stack</title>
+<meta name="description" content="Ray Hart is a software engineer and Director of Technology with twelve years in IT. He builds AI software and deploys it, from an agent-directed video pipeline on AWS to tools his team uses daily.">
+<meta name="author" content="Raymond Hart">
+<meta name="theme-color" content="#0c0e12" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#e8dfc8" media="(prefers-color-scheme: light)">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Ray Hart · The Whole Stack">
+<meta property="og:description" content="Ray Hart is a software engineer and Director of Technology with twelve years in IT. He builds AI software and deploys it, from an agent-directed video pipeline on AWS to tools his team uses daily.">
+<meta property="og:image" content="images/moongate-aerial.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Ccircle cx='12' cy='12' r='11' fill='%230c0e12'/%3E%3Cpath d='M12 3l1.6 7.4L21 12l-7.4 1.6L12 21l-1.6-7.4L3 12l7.4-1.6z' fill='%23e8934a'/%3E%3C/svg%3E">
+<link rel="preload" as="image" href="images/moongate-map-hero.jpg" fetchpriority="high">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap">
+<style>
+  /* ============ Tokens: light = the parchment, defined on bare :root ============ */
+  :root{
+    --bg:#e8dfc8; --bg-2:#ddd2b5; --surface:#f1eadb; --surface-2:#e3d9bf;
+    --text:#221d15; --muted:#5d5446; --faint:#665d4e;
+    --line:rgba(34,29,21,.14); --line-strong:rgba(34,29,21,.26);
+    --ember:#ad4c17; --ember-2:#c9652a; --ember-soft:rgba(173,76,23,.12);
+    --patina:#2d6a60; --patina-2:#3f8a7d; --patina-soft:rgba(45,106,96,.12);
+    --veil-a:rgba(232,223,200,.42); --veil-b:rgba(232,223,200,.96);
+    --grain-op:.14; --grain-blend:multiply;
+    --shadow:0 1px 2px rgba(34,29,21,.08),0 18px 44px -22px rgba(34,29,21,.35);
+    --rail-panel:#efe7d3; --screen:#0b0d11; --screen-ink:#ebe4d3;
+    --on-ember:#fff; --ember-hover:#963f10; --lamp-min:.5; --lamp-glow:rgba(173,76,23,.08); --lamp-blend:multiply; --scrim:rgba(232,223,200,.55); --scrim-solid:rgba(232,223,200,.94);
+  }
+  @media (prefers-color-scheme:dark){
+    :root:not([data-theme="light"]){
+      --bg:#0c0e12; --bg-2:#08090c; --surface:#13161c; --surface-2:#191d25;
+      --text:#ebe4d3; --muted:#a8a296; --faint:#8a857a;
+      --line:rgba(235,228,211,.11); --line-strong:rgba(235,228,211,.2);
+      --ember:#e8934a; --ember-2:#f2a95f; --ember-soft:rgba(232,147,74,.14);
+      --patina:#5aa99c; --patina-2:#7cc4b8; --patina-soft:rgba(90,169,156,.13);
+      --veil-a:rgba(12,14,18,.62); --veil-b:rgba(12,14,18,.97);
+      --grain-op:.08; --grain-blend:soft-light;
+      --shadow:0 1px 2px rgba(0,0,0,.45),0 28px 70px -30px rgba(0,0,0,.8);
+      --rail-panel:#13161c; --screen:#07080b; --screen-ink:#ebe4d3;
+    --on-ember:#16110b; --ember-hover:#f2a95f; --lamp-min:.34; --lamp-glow:rgba(255,176,96,.17); --lamp-blend:screen; --scrim:rgba(12,14,18,.5); --scrim-solid:rgba(12,14,18,.93);
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#0c0e12; --bg-2:#08090c; --surface:#13161c; --surface-2:#191d25;
+    --text:#ebe4d3; --muted:#a8a296; --faint:#8a857a;
+    --line:rgba(235,228,211,.11); --line-strong:rgba(235,228,211,.2);
+    --ember:#e8934a; --ember-2:#f2a95f; --ember-soft:rgba(232,147,74,.14);
+    --patina:#5aa99c; --patina-2:#7cc4b8; --patina-soft:rgba(90,169,156,.13);
+    --veil-a:rgba(12,14,18,.62); --veil-b:rgba(12,14,18,.97);
+    --grain-op:.08; --grain-blend:soft-light;
+    --shadow:0 1px 2px rgba(0,0,0,.45),0 28px 70px -30px rgba(0,0,0,.8);
+    --rail-panel:#13161c; --screen:#07080b; --screen-ink:#ebe4d3;
+    --on-ember:#16110b; --ember-hover:#f2a95f; --lamp-min:.34; --lamp-glow:rgba(255,176,96,.17); --lamp-blend:screen; --scrim:rgba(12,14,18,.5); --scrim-solid:rgba(12,14,18,.93);
+  }
+
+
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0;background:var(--bg);color:var(--text);font-family:"IBM Plex Sans",ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;font-size:17px;line-height:1.65;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;overflow-x:hidden}
+  ::selection{background:var(--ember-soft);color:var(--text)}
+  a{color:inherit}
+  h1,h2,h3{font-family:"IBM Plex Sans",system-ui,sans-serif;font-weight:500;text-wrap:balance;margin:0}
+  .wrap{width:min(1180px,92vw);margin-inline:auto}
+  :focus-visible{outline:2px solid var(--ember);outline-offset:3px;border-radius:3px}
+  [tabindex="-1"]:focus{outline:none}
+  .skip{position:absolute;left:1rem;top:-3rem;z-index:100;background:var(--ember);color:var(--on-ember);padding:.5rem .9rem;border-radius:4px;text-decoration:none;font-size:.85rem;transition:top .2s}
+  .skip:focus{top:1rem}
+  body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:50;opacity:var(--grain-op);mix-blend-mode:var(--grain-blend);background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.5 0 0 0 0 0.45 0 0 0 0 0.35 0 0 0 .9 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");background-size:220px 220px}
+  .eyebrow{font-family:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.72rem;letter-spacing:.22em;text-transform:uppercase;color:var(--faint);display:inline-flex;align-items:center;gap:.7em}
+  .eyebrow::before{content:"";width:1.8em;height:1px;background:var(--line-strong)}
+  .btn{display:inline-flex;align-items:center;gap:.5rem;text-decoration:none;font-size:.9rem;letter-spacing:.01em;padding:.66rem 1.1rem;border-radius:999px;border:1px solid var(--line-strong);color:var(--text);background:color-mix(in srgb,var(--surface) 60%,transparent);transition:border-color .25s,background .25s,transform .25s}
+  .btn:hover{border-color:var(--ember);transform:translateY(-1px)}
+  .btn.primary{background:var(--ember);border-color:var(--ember);color:var(--on-ember)}
+  .btn.primary:hover{background:var(--ember-hover);border-color:var(--ember-hover)}
+  .btn svg{width:15px;height:15px}
+  .kbd{font-family:"IBM Plex Mono",monospace;font-size:.66rem;padding:.15em .45em;border:1px solid var(--line-strong);border-bottom-width:2px;border-radius:4px;color:var(--muted);background:var(--surface)}
+
+  /* ============ Header ============ */
+  header{position:sticky;top:0;z-index:40;backdrop-filter:blur(10px);background:color-mix(in srgb,var(--bg) 78%,transparent);border-bottom:1px solid var(--line)}
+  .bar{display:flex;align-items:center;justify-content:space-between;height:64px}
+  .mark{display:flex;align-items:center;gap:.6rem;font-family:"IBM Plex Sans",system-ui,sans-serif;font-size:1.4rem;font-weight:600;letter-spacing:.01em;text-decoration:none}
+  .mark svg{width:20px;height:20px;color:var(--ember)}
+  nav.top{display:flex;align-items:center;gap:1.2rem}
+  .navlinks{display:flex;gap:1.5rem}
+  nav a.nl{font-size:.86rem;text-decoration:none;color:var(--muted);transition:color .2s;position:relative}
+  nav a.nl::after{content:"";position:absolute;left:0;right:100%;bottom:-4px;height:1px;background:var(--ember);transition:right .3s}
+  nav a.nl:hover{color:var(--text)} nav a.nl:hover::after{right:0}
+  .jump{appearance:none;border:1px solid var(--line-strong);background:transparent;color:var(--text);height:34px;padding:0 .8rem;border-radius:999px;cursor:pointer;display:inline-flex;align-items:center;gap:.5rem;font:inherit;font-size:.8rem;transition:.25s}
+  .jump:hover{border-color:var(--ember)}
+  .jump .jl-m{display:none}
+  .toggle{appearance:none;border:1px solid var(--line-strong);background:transparent;color:var(--muted);width:34px;height:34px;border-radius:50%;cursor:pointer;display:grid;place-items:center;transition:.25s}
+  .toggle:hover{color:var(--ember);border-color:var(--ember);transform:rotate(30deg)}
+  .toggle svg{width:15px;height:15px}
+  @media(max-width:760px){.navlinks{display:none}.jump .jl-d,.jump .kbd{display:none}.jump .jl-m{display:inline}}
+
+  /* ============ Hero: text on a quiet panel, the lit map to the right ============ */
+  .hero{position:relative;overflow:hidden;min-height:min(90vh,880px);display:flex;align-items:center;border-bottom:1px solid var(--line);perspective:1400px}
+  .hero-inner{position:relative;z-index:2;padding:clamp(3.5rem,8vh,5.5rem) 0 clamp(2.6rem,6vh,4rem)}
+  .hero-copy{max-width:41rem}
+  .hero h1{font-size:clamp(2.6rem,5.2vw,4.5rem);line-height:1.02;letter-spacing:-.012em;font-weight:500}
+  .hero h1 em{font-style:italic;color:var(--ember)}
+  .hero .role{margin:.5rem 0 0;font-family:"IBM Plex Sans",system-ui,sans-serif;font-style:italic;font-size:clamp(1.5rem,2.4vw,2.1rem);line-height:1.2;color:var(--ember)}
+  .hero .lede{margin-top:1.3rem;font-size:clamp(1.05rem,1.45vw,1.2rem);color:var(--muted);line-height:1.6}
+  .hero .lede strong{color:var(--text);font-weight:600}
+  .actions{margin-top:1.6rem;display:flex;flex-wrap:wrap;gap:.7rem;align-items:center}
+  @media(min-width:901px) and (max-width:1180px){
+    .hero-copy{max-width:36rem}
+  }
+  @media(max-width:900px){
+    .hero{display:block;min-height:0}
+    .hero-inner{padding-top:15vh;padding-bottom:2.2rem}
+  }
+  .js .rise{opacity:0;transform:translateY(22px);animation:rise .9s cubic-bezier(.2,.7,.2,1) forwards}
+  .js .rise:nth-child(1){animation-delay:.1s}.js .rise:nth-child(2){animation-delay:.25s}.js .rise:nth-child(3){animation-delay:.4s}.js .rise:nth-child(4){animation-delay:.55s}.js .rise:nth-child(5){animation-delay:.7s}
+  @keyframes rise{to{opacity:1;transform:none}}
+
+  /* ============ Rail ============ */
+  .rail{position:fixed;left:calc((100vw - 1180px)/2 - 244px);width:184px;top:50%;transform:translateY(-50%);z-index:30;display:none;flex-direction:column;gap:.15rem;padding:.9rem .7rem .9rem .5rem;border:1px solid var(--line-strong);border-radius:4px;background:var(--rail-panel);box-shadow:var(--shadow)}
+  @media(min-width:1660px){.rail{display:flex}}
+  .rail a{display:grid;grid-template-columns:2.2rem 1fr;align-items:baseline;gap:.5rem;padding:.3rem .7rem;text-decoration:none;color:var(--muted);font-size:.8rem;position:relative;transition:color .25s}
+  .rail a .num{font-family:"IBM Plex Sans",system-ui,sans-serif;font-style:italic;font-size:1.05rem;color:var(--faint);transition:color .25s}
+  .rail a::before{content:"";position:absolute;left:-.5rem;top:20%;bottom:20%;width:2px;background:var(--ember);transform:scaleY(0);transition:transform .3s}
+  .rail a:hover,.rail a.on{color:var(--text)}
+  .rail a.on .num{color:var(--ember)}
+  .rail a.on::before{transform:scaleY(1)}
+  .rail .rl{font-family:"IBM Plex Mono",monospace;font-size:.6rem;letter-spacing:.2em;text-transform:uppercase;color:var(--faint);padding:0 .7rem .5rem}
+
+  /* ============ Route line through the featured chapters ============ */
+  .route{position:absolute;top:0;left:-56px;width:40px;height:100%;pointer-events:none;display:none;overflow:visible}
+  @media(min-width:1320px){.route{display:block}}
+  .route .bg{fill:none;stroke:var(--line-strong);stroke-width:1;stroke-dasharray:2 5}
+  .route .fg{fill:none;stroke:var(--ember);stroke-width:1.5;stroke-linecap:round}
+  .route .pt{fill:var(--bg);stroke:var(--line-strong);stroke-width:1.2;transition:fill .4s,stroke .4s}
+  .route .pt.on{fill:var(--ember);stroke:var(--ember)}
+  .route .lbl{font-family:"IBM Plex Sans",system-ui,sans-serif;font-style:italic;font-size:12px;fill:var(--faint);transition:fill .4s}
+  .route .lbl.on{fill:var(--ember)}
+
+  /* ============ Sections ============ */
+  section{padding:clamp(3.8rem,8vh,6rem) 0}
+  #work{position:relative;padding-top:clamp(3rem,7vh,4.5rem)}
+  .sec-head{display:flex;flex-direction:column;gap:.8rem;max-width:64ch}
+  .sec-head h2{font-size:clamp(2.2rem,4.6vw,3.3rem);line-height:1.02;letter-spacing:-.012em}
+  .sec-head h2 em{font-style:italic;color:var(--ember)}
+  .sec-head p{margin:0;color:var(--muted);font-size:1.05rem}
+  .byline{font-family:"IBM Plex Mono",monospace;font-size:.74rem;letter-spacing:.08em;color:var(--muted)}
+  .byline b{color:var(--ember);font-weight:500}
+  .divider{display:flex;align-items:center;gap:1.2rem;margin:clamp(3.2rem,7vh,5rem) 0 clamp(1.8rem,4vh,2.8rem)}
+  .divider::before,.divider::after{content:"";flex:1;height:1px;background:var(--line-strong)}
+  .divider svg{width:28px;height:28px;color:var(--ember);opacity:.85}
+  .bridge{margin:clamp(2.4rem,6vh,4rem) auto 0;max-width:40ch;text-align:center;font-family:"IBM Plex Sans",system-ui,sans-serif;font-style:italic;font-size:clamp(1.4rem,2.6vw,1.9rem);line-height:1.25;color:var(--muted)}
+  .bridge em{color:var(--ember)}
+
+  /* ============ Featured chapters ============ */
+  .chapter{scroll-margin-top:84px;position:relative}
+  .chapter::before{content:attr(data-num);position:absolute;right:-.5rem;top:-3.8rem;font-family:"IBM Plex Sans",system-ui,sans-serif;font-style:italic;font-size:clamp(8rem,16vw,14rem);line-height:1;color:var(--ember);opacity:.055;pointer-events:none;user-select:none}
+  @supports (animation-timeline: view()){
+    .chapter::before{animation:wm linear both;animation-timeline:view();animation-range:entry 0% exit 100%}
+    @keyframes wm{from{transform:translateY(5rem)}to{transform:translateY(-7rem)}}
+  }
+  .ch-head{display:grid;grid-template-columns:auto 1fr;gap:.9rem 1.5rem;align-items:baseline;margin-bottom:1.5rem;position:relative}
+  .ch-num{font-family:"IBM Plex Sans",system-ui,sans-serif;font-style:italic;font-weight:500;font-size:clamp(2.2rem,4.6vw,3.4rem);color:var(--ember);line-height:1;letter-spacing:-.02em}
+  .ch-title{font-size:clamp(2.3rem,5.2vw,4rem);line-height:.98;letter-spacing:-.015em;position:relative;display:inline-block}
+  .js .ch-title{background:linear-gradient(90deg,var(--text) 0 44%,var(--ember-2) 56% 100%);background-size:240% 100%;background-position:100% 0;-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+  .js .ch-head.in .ch-title{animation:cool 1.7s .12s cubic-bezier(.3,.6,.2,1) forwards}
+  @keyframes cool{to{background-position:0 0}}
+  .ch-kicker{grid-column:2;font-size:1.02rem;color:var(--muted);margin-top:-.2rem}
+  .case{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(0,1fr);gap:clamp(1.4rem,3vw,2.4rem);align-items:start}
+  .chapter.flip .case{grid-template-columns:minmax(0,1fr) minmax(0,1.5fr)}
+  .chapter.flip .case-media{order:2}
+  @media(max-width:920px){.case,.chapter.flip .case{grid-template-columns:1fr}.chapter.flip .case-media{order:0}}
+  .case-media{display:flex;flex-direction:column;gap:.9rem;min-width:0}
+  .case-card{border:1px solid var(--line-strong);border-radius:8px;background:var(--surface);padding:1.25rem 1.3rem 1.2rem;display:flex;flex-direction:column;gap:1rem;box-shadow:var(--shadow)}
+  .kv{display:grid;grid-template-columns:auto 1fr;gap:.4rem 1rem;margin:0;font-size:.9rem;padding-bottom:1rem;border-bottom:1px solid var(--line)}
+  .kv dt{font-family:"IBM Plex Mono",monospace;font-size:.66rem;letter-spacing:.16em;text-transform:uppercase;color:var(--faint);padding-top:.25rem}
+  .kv dd{margin:0;color:var(--text);line-height:1.45}
+  .kv dd.live::before{content:"";display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--patina);margin-right:.45rem;box-shadow:0 0 0 3px var(--patina-soft);vertical-align:.08em}
+  .lead{margin:0;font-size:1.06rem;line-height:1.55;color:var(--text)}
+  .call{border-left:2px solid var(--ember);padding:.15rem 0 .15rem .95rem}
+  .call b{display:block;font-family:"IBM Plex Mono",monospace;font-size:.66rem;letter-spacing:.18em;text-transform:uppercase;color:var(--ember);margin-bottom:.35rem;font-weight:500}
+  .call p{margin:0;font-size:.96rem;color:var(--muted);line-height:1.58}
+  .hl{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:.6rem}
+  .hl li{position:relative;padding-left:1.3rem;color:var(--muted);font-size:.94rem;line-height:1.55}
+  .hl li::before{content:"";position:absolute;left:0;top:.66em;width:.55rem;height:1px;background:var(--ember)}
+  .hl b{color:var(--text);font-weight:600}
+  .facts{font-family:"IBM Plex Mono",monospace;font-size:.7rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);display:flex;flex-wrap:wrap;gap:.4rem 0}
+  .facts span+span::before{content:"\00b7";margin:0 .7rem;color:var(--ember)}
+
+  /* real media frames: screenshots keep their own colours */
+  .plate{position:relative;margin:0;border:1px solid var(--line-strong);border-radius:8px;overflow:hidden;background:#0b0d11;box-shadow:var(--shadow);transform-style:preserve-3d;transition:transform .55s cubic-bezier(.2,.7,.2,1),box-shadow .55s}
+  .plate.live{transition:box-shadow .55s}
+  .plate::after{content:"";position:absolute;inset:0;pointer-events:none;z-index:3;opacity:0;transition:opacity .45s;mix-blend-mode:soft-light;background:radial-gradient(380px circle at var(--mx,50%) var(--my,50%),rgba(255,255,255,.22),transparent 62%)}
+  .plate:hover::after{opacity:1}
+  .plate img{display:block;width:100%;height:auto}
+  figcaption,.cap{display:flex;justify-content:space-between;gap:1rem;padding:.6rem .85rem;font-family:"IBM Plex Mono",monospace;font-size:.72rem;letter-spacing:.03em;color:var(--muted);background:var(--surface);border-top:1px solid var(--line)}
+  figcaption b,.cap b{color:var(--text);font-weight:500;white-space:nowrap}
+  .trio{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:.7rem}
+  .trio .plate img{aspect-ratio:16/9;object-fit:cover}
+  .trio figcaption{font-size:.66rem;padding:.45rem .6rem}
+  @media(max-width:600px){.trio{grid-template-columns:1fr}}
+
+  /* steppers: continent to street, alert to device */
+  .stepper{margin:0;border:1px solid var(--line-strong);border-radius:8px;overflow:hidden;background:#0b0d11;box-shadow:var(--shadow)}
+  .frames{position:relative;aspect-ratio:16/9;overflow:hidden;background:#0b0d11}
+  .fr{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transform:scale(1.14);transition:opacity .9s ease,transform 1.3s cubic-bezier(.2,.7,.2,1)}
+  .fr.on{opacity:1;transform:none}
+  .fr.past{opacity:0;transform:scale(2.6)}
+  .stepper.fade .fr,.stepper.fade .fr.past,.stepper.fade .fr.on{transform:none}
+  .fr.contain{object-fit:contain;background:#0b0d11}
+  .play{position:absolute;right:.8rem;bottom:.8rem;z-index:2;appearance:none;border:1px solid rgba(235,228,211,.35);background:rgba(12,14,18,.7);backdrop-filter:blur(6px);color:#ebe4d3;border-radius:999px;padding:.45rem .9rem;font:inherit;font-size:.8rem;cursor:pointer;display:inline-flex;gap:.45rem;align-items:center;transition:border-color .25s}
+  .play:hover{border-color:var(--ember)}
+  .play svg{width:12px;height:12px}
+  .steps{display:grid;grid-template-columns:repeat(var(--n,3),minmax(0,1fr));border-top:1px solid var(--line)}
+  .st{appearance:none;border:0;border-right:1px solid var(--line);background:var(--surface);color:var(--muted);text-align:left;padding:.75rem .9rem .8rem;cursor:pointer;font:inherit;display:flex;flex-direction:column;gap:.2rem;position:relative;transition:background .3s}
+  .st:last-child{border-right:0}
+  .st i{font-family:"IBM Plex Mono",monospace;font-style:normal;font-size:.62rem;letter-spacing:.16em;text-transform:uppercase;color:var(--faint)}
+  .st b{font-family:"IBM Plex Sans",system-ui,sans-serif;font-size:1.25rem;font-weight:500;color:var(--text);line-height:1.1}
+  .st span{font-size:.8rem;line-height:1.4}
+  .st::before{content:"";position:absolute;left:0;right:0;top:-1px;height:2px;background:var(--ember);transform:scaleX(0);transform-origin:left;transition:transform .5s}
+  .st.on{background:var(--surface-2)}
+  .st.on::before{transform:scaleX(1)}
+  .st.on i{color:var(--ember)}
+  .st:hover b{color:var(--ember)}
+  @media(max-width:600px){.st span{display:none}.st{padding:.6rem .7rem}}
+
+  /* Pixel Mage: one video, large */
+  .stage{position:relative;border:1px solid var(--line-strong);border-radius:8px;overflow:hidden;background:radial-gradient(80% 70% at 50% 35%,rgba(232,147,74,.16),transparent 70%),#07080b;box-shadow:var(--shadow);display:flex;flex-direction:column;align-items:center;padding:1.4rem 1rem 0}
+  .stage video{height:min(70vh,640px);max-width:100%;aspect-ratio:9/16;background:#000;border-radius:6px;border:1px solid rgba(235,228,211,.18);box-shadow:0 30px 70px -30px rgba(0,0,0,.9)}
+  .stage figcaption{align-self:stretch;margin-top:1.2rem;background:transparent;border-top:1px solid rgba(235,228,211,.1);color:#a8a296}
+  .stage figcaption b{color:#ebe4d3}
+  .reel-head{margin-top:1.4rem;display:flex;align-items:baseline;justify-content:space-between;gap:1rem;flex-wrap:wrap}
+  .reel-head p{margin:0;color:var(--muted);font-size:.9rem}
+  details.more-sys{margin-top:1.6rem;border:1px solid var(--line-strong);border-radius:8px;background:var(--surface);overflow:hidden}
+  details.more-sys>summary{list-style:none;cursor:pointer;padding:.9rem 1.2rem;display:flex;justify-content:space-between;align-items:center;font-size:.95rem}
+  details.more-sys>summary::-webkit-details-marker{display:none}
+  details.more-sys>summary::after{content:"+";font-family:"IBM Plex Mono",monospace;color:var(--ember);font-size:1.1rem;transition:transform .3s}
+  details.more-sys[open]>summary::after{transform:rotate(45deg)}
+  details.more-sys .pillars{margin:0;border-radius:0;border-left:0;border-right:0;border-bottom:0}
+  .pillars{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;margin-top:1.2rem;background:var(--line-strong);border:1px solid var(--line-strong);border-radius:6px;overflow:hidden}
+  @media(max-width:960px){.pillars{grid-template-columns:repeat(2,1fr)}}
+  @media(max-width:520px){.pillars{grid-template-columns:1fr}}
+  .pillar{background:var(--surface);padding:1.3rem 1.25rem 1.4rem;display:flex;flex-direction:column;gap:.45rem;transition:background .3s}
+  .pillar:hover{background:var(--surface-2)}
+  .pillar .n{font-family:"IBM Plex Sans",system-ui,sans-serif;font-style:italic;font-size:1.25rem;color:var(--patina);line-height:1}
+  .pillar[data-side="magick"] .n{color:var(--ember)}
+  .pillar h4{margin:0;font-family:"IBM Plex Sans",sans-serif;font-size:.98rem;font-weight:600;letter-spacing:-.01em}
+  .pillar p{margin:0;font-size:.85rem;color:var(--muted);line-height:1.5}
+  .pillar .n{font-family:"IBM Plex Sans",system-ui,sans-serif;font-style:italic;font-size:1.25rem;color:var(--patina);line-height:1}
+  .pillar[data-side="magick"] .n{color:var(--ember)}
+  .pillar h4{margin:0;font-family:"IBM Plex Sans",sans-serif;font-size:.98rem;font-weight:600;letter-spacing:-.01em}
+  .pillar p{margin:0;font-size:.86rem;color:var(--muted);line-height:1.5}
+
+
+
+  /* Pixel Mage strip + lightbox */
+  .reel-head{margin-top:2.4rem;display:flex;align-items:baseline;justify-content:space-between;gap:1rem;flex-wrap:wrap}
+  .reel-head p{margin:0;color:var(--muted);font-size:.9rem}
+  .strip{display:flex;flex-wrap:wrap;gap:.6rem;margin-top:1rem;padding:1rem 1rem 1.1rem;border:1px solid var(--line-strong);border-radius:6px;background:linear-gradient(180deg,var(--surface),var(--surface-2))}
+  .thumb{appearance:none;border:1px solid var(--line-strong);background:#000;padding:0;border-radius:3px;overflow:hidden;cursor:pointer;flex:0 0 auto;width:64px;position:relative;transform-origin:center;transition:transform .35s cubic-bezier(.2,.7,.2,1),border-color .25s,box-shadow .35s}
+  .thumb img{display:block;width:100%;aspect-ratio:9/16;object-fit:cover;filter:saturate(.65) brightness(.82);transition:filter .3s}
+  .thumb .lbl{position:absolute;left:0;right:0;bottom:0;padding:.4rem .4rem .35rem;font-family:"IBM Plex Mono",monospace;font-size:.56rem;letter-spacing:.04em;line-height:1.3;color:#ebe4d3;text-align:left;background:linear-gradient(0deg,rgba(0,0,0,.88),rgba(0,0,0,0));opacity:0;transition:opacity .25s}
+  .thumb .lbl i{display:block;font-style:normal;color:var(--ember-2)}
+  .thumb:hover,.thumb:focus-visible{transform:translateY(-4px) scale(1.35);border-color:var(--ember);box-shadow:var(--shadow);z-index:2}
+  .thumb:hover img,.thumb:focus-visible img{filter:none}
+  .thumb:hover .lbl,.thumb:focus-visible .lbl{opacity:1}
+  .lightbox{position:fixed;inset:0;z-index:60;display:grid;grid-template-columns:auto 1fr auto;align-items:center;justify-items:center;gap:1rem;padding:1.5rem;background:rgba(8,9,12,.9);backdrop-filter:blur(8px)}
+  .lightbox[hidden]{display:none}
+  .lb-fig{margin:0;display:flex;flex-direction:column;gap:.55rem;align-items:center}
+  .lb-fig video{height:min(78vh,900px);aspect-ratio:9/16;max-width:92vw;background:#000;border:1px solid rgba(235,228,211,.2);border-radius:6px;box-shadow:0 30px 80px -20px rgba(0,0,0,.9)}
+  .lb-fig figcaption{display:flex;gap:1.2rem;font-family:"IBM Plex Mono",monospace;font-size:.68rem;letter-spacing:.08em;color:#a8a296}
+  .lb-fig .lb-title{color:#ebe4d3}
+  .lb-x,.lb-nav{appearance:none;border:1px solid rgba(235,228,211,.25);background:rgba(235,228,211,.06);color:#ebe4d3;width:42px;height:42px;border-radius:50%;cursor:pointer;font-size:1.05rem;display:grid;place-items:center;transition:.2s}
+  .lb-x:hover,.lb-nav:hover{border-color:var(--ember);color:var(--ember)}
+  .lb-x{position:absolute;top:1.2rem;right:1.2rem}
+  @media(max-width:640px){.lightbox{grid-template-columns:1fr;padding:1rem}.lb-nav{position:absolute;bottom:1rem}.lb-nav.prev{left:1rem}.lb-nav.next{right:1rem}}
+
+
+  /* Pixel Mage deployment panel */
+  .infra{margin-top:1.8rem;border:1px solid var(--line-strong);border-radius:8px;background:var(--surface);box-shadow:var(--shadow);padding:1.3rem 1.4rem 1.4rem}
+  .infra-head{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:.4rem 1.5rem}
+  .infra-head h4{margin:.35rem 0 0;font-family:"IBM Plex Sans",system-ui,sans-serif;font-weight:500;font-size:clamp(1.5rem,2.6vw,1.9rem);line-height:1.1}
+  .infra-head p{margin:0;color:var(--muted);font-size:.9rem;max-width:52ch}
+  .flow{margin-top:1.2rem;display:flex;flex-direction:column;gap:.7rem}
+  .lane{display:flex;flex-wrap:wrap;align-items:center;gap:.45rem}
+  .lane-l{flex:0 0 7.5rem;font-family:"IBM Plex Mono",monospace;font-size:.62rem;letter-spacing:.16em;text-transform:uppercase;color:var(--faint)}
+  .node{display:flex;flex-direction:column;gap:.1rem;padding:.5rem .7rem;border:1px solid var(--line-strong);border-radius:6px;background:var(--surface-2);min-width:0}
+  .node b{font-size:.86rem;font-weight:600;color:var(--text);line-height:1.2}
+  .node i{font-style:normal;font-size:.72rem;color:var(--muted);line-height:1.3}
+  .lane.core .node{border-color:color-mix(in srgb,var(--ember) 45%,var(--line-strong))}
+  .arr{color:var(--ember);font-size:.95rem}
+  .lane.side .node{background:transparent}
+  @media(max-width:700px){.lane-l{flex-basis:100%}.lane.core{flex-direction:column;align-items:stretch;gap:.3rem}.lane.core .lane-l{flex:none}.lane.core .arr{transform:rotate(90deg);align-self:center;line-height:1}}
+  .infra .hl{margin-top:1.3rem;display:grid;grid-template-columns:1fr 1fr;gap:.6rem 2rem}
+  @media(max-width:800px){.infra .hl{grid-template-columns:1fr}}
+
+  /* click any screenshot to see it full size */
+  .plate img,.stepper .frames,.wc-media img{cursor:zoom-in}
+  .zb{appearance:none;display:block;width:100%;height:auto;margin:0;padding:0;border:0;background:none;color:inherit;font:inherit;cursor:zoom-in}
+  .zb:focus-visible{outline:2px solid var(--ember);outline-offset:-3px;border-radius:0}
+  .wc-media>.zb,.wc-media.quad .zb{height:100%}
+  .enl{position:absolute;right:.8rem;top:.8rem;z-index:2;appearance:none;border:1px solid rgba(235,228,211,.35);background:rgba(12,14,18,.7);backdrop-filter:blur(6px);color:#ebe4d3;border-radius:999px;width:34px;height:34px;display:grid;place-items:center;cursor:zoom-in;transition:border-color .25s}
+  .enl:hover{border-color:var(--ember)}
+  .enl svg{width:14px;height:14px}
+  .zoom{position:fixed;inset:0;z-index:65;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.8rem;padding:2rem 1rem;background:rgba(8,9,12,.93);backdrop-filter:blur(8px);cursor:zoom-out}
+  .zoom[hidden]{display:none}
+  .zoom img{max-width:min(96vw,1900px);max-height:86vh;border-radius:6px;box-shadow:0 30px 80px -20px rgba(0,0,0,.9);background:#0b0d11}
+  .zoom p{margin:0;max-width:90ch;text-align:center;font-family:"IBM Plex Mono",monospace;font-size:.75rem;color:#a8a296}
+  .zoom .lb-x{position:absolute;top:1.1rem;right:1.1rem}
+
+  /* ============ Numbers ============ */
+  .numbers{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line-strong);border:1px solid var(--line-strong);border-radius:8px;overflow:hidden}
+  @media(max-width:760px){.numbers{grid-template-columns:repeat(2,1fr)}}
+  .numbers div{background:var(--surface);padding:1.15rem 1.25rem 1.2rem;display:flex;flex-direction:column;gap:.15rem}
+  .numbers b{font-family:"IBM Plex Sans",system-ui,sans-serif;font-weight:500;font-size:clamp(2rem,3.4vw,2.7rem);line-height:1;color:var(--text);font-variant-numeric:tabular-nums}
+  .numbers b i{font-style:italic;color:var(--ember)}
+  .numbers span{font-family:"IBM Plex Mono",monospace;font-size:.66rem;letter-spacing:.14em;text-transform:uppercase;color:var(--faint)}
+  .numbers small{font-size:.82rem;color:var(--muted);margin-top:.35rem;line-height:1.4}
+  .numbers-note{margin-top:.6rem;font-family:"IBM Plex Mono",monospace;font-size:.68rem;letter-spacing:.04em;color:var(--muted)}
+
+  /* ============ More work: compact collection ============ */
+  .grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));grid-auto-flow:dense;gap:1.1rem;margin-top:2rem}
+  @media(max-width:1000px){.grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+  @media(max-width:640px){.grid{grid-template-columns:1fr}}
+  .work-card{scroll-margin-top:84px;display:flex;flex-direction:column;border:1px solid var(--line-strong);border-radius:8px;background:var(--surface);overflow:hidden;box-shadow:var(--shadow);transition:transform .35s cubic-bezier(.2,.7,.2,1),border-color .35s}
+  .work-card:hover{transform:translateY(-4px);border-color:color-mix(in srgb,var(--ember) 55%,var(--line-strong))}
+  .wc-media{position:relative;margin:0;aspect-ratio:16/10;overflow:hidden;background:#0b0d11;border-bottom:1px solid var(--line)}
+  .wc-media>img,.wc-media>.zb>img{width:100%;height:100%;object-fit:cover;object-position:top left;display:block;transition:transform 1s}
+  .work-card:hover .wc-media>img,.work-card:hover .wc-media>.zb>img{transform:scale(1.04)}
+  .wc-media .inset{position:absolute;right:.7rem;bottom:.7rem;width:52%;border-radius:5px;border:1px solid rgba(0,0,0,.35);box-shadow:0 14px 30px -12px rgba(0,0,0,.7);background:#fff}
+  .wc-media .inset img{display:block;width:100%;border-radius:4px}
+  .wc-media.quad{display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;gap:2px;background:#0b0d11}
+  .wc-media.quad img{width:100%;height:100%;object-fit:cover;display:block}
+  .wc-media.type{display:flex;flex-direction:column;justify-content:flex-end;padding:1.1rem 1.2rem;background:radial-gradient(90% 90% at 80% 10%,rgba(232,147,74,.18),transparent 60%),linear-gradient(180deg,#14171d,#0b0d11);color:#ebe4d3}
+  .wc-media.type pre{margin:0;font-family:"IBM Plex Mono",monospace;font-size:.7rem;line-height:1.55;color:#c9c2b4;white-space:pre-wrap}
+  .wc-media.type pre b{color:#f2a95f;font-weight:500}
+  .wc-tag{position:absolute;left:.7rem;top:.7rem;font-family:"IBM Plex Mono",monospace;font-size:.62rem;letter-spacing:.12em;text-transform:uppercase;color:#ebe4d3;background:rgba(12,14,18,.72);backdrop-filter:blur(4px);padding:.25rem .5rem;border-radius:4px}
+  .work-card.wide{grid-column:1 / -1}
+  @media(min-width:1001px){.work-card.wide{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr)}.work-card.wide .nx-media{border-bottom:0;border-right:1px solid var(--line)}}
+  .nx-framed{border:1px solid var(--line-strong);border-radius:10px;overflow:hidden;box-shadow:0 1px 2px rgba(0,0,0,.06)}
+  .shots4{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:.8rem;margin-top:1rem}
+  .shots4 .plate:first-child{grid-column:1 / -1}
+  .shots4 .plate:not(:first-child) img{aspect-ratio:16/10;object-fit:cover;object-position:top left}
+  @media(max-width:760px){.shots4{grid-template-columns:1fr}}
+  #nexus .infra{margin-top:1.8rem}
+  .nx-media{display:flex;flex-direction:column;background:#0b0d11;border-bottom:1px solid var(--line)}
+  .nx-player{margin:0}
+  .nx-player video{display:block;width:100%;aspect-ratio:16/9;background:#000}
+  .nx-player figcaption{background:transparent;border-top:1px solid rgba(235,228,211,.1);color:#a8a296}
+  .nx-player figcaption b{color:#ebe4d3}
+  .nx-eps{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:.55rem;padding:.7rem .85rem .9rem}
+  .ep{appearance:none;display:block;padding:0;border:1px solid rgba(235,228,211,.18);border-radius:6px;overflow:hidden;background:#000;color:#ebe4d3;font:inherit;text-align:left;cursor:pointer;transition:border-color .25s}
+  .ep img{display:block;width:100%;aspect-ratio:16/9;object-fit:cover;opacity:.65;transition:opacity .25s}
+  .ep span{display:block;padding:.35rem .5rem .45rem;font-size:.72rem;line-height:1.3}
+  .ep:hover img,.ep.on img{opacity:1}
+  .ep.on{border-color:var(--ember)}
+  .nx-shots{border:1px solid var(--line);border-radius:8px}
+  .wc-body{padding:1rem 1.1rem 1.1rem;display:flex;flex-direction:column;gap:.55rem;flex:1}
+  .wc-status{font-family:"IBM Plex Mono",monospace;font-size:.66rem;letter-spacing:.12em;text-transform:uppercase;color:var(--patina)}
+  .work-card h3{font-size:1.6rem;line-height:1.05}
+  .wc-body>p{margin:0;color:var(--muted);font-size:.93rem;line-height:1.55}
+  .work-card details{margin-top:auto;border-top:1px solid var(--line);padding-top:.6rem}
+  .work-card summary{cursor:pointer;list-style:none;font-size:.84rem;color:var(--text);display:flex;justify-content:space-between;align-items:center}
+  .work-card summary::-webkit-details-marker{display:none}
+  .work-card summary::after{content:"+";font-family:"IBM Plex Mono",monospace;color:var(--ember);transition:transform .3s}
+  .work-card details[open] summary::after{transform:rotate(45deg)}
+  .work-card details .hl{margin-top:.7rem}
+  .work-card details .hl li{font-size:.87rem}
+
+  /* ============ About ============ */
+  .about{display:grid;grid-template-columns:240px minmax(0,62ch);gap:clamp(2rem,4vw,3.4rem);margin-top:2.4rem;align-items:start}
+  @media(max-width:1060px){.about{grid-template-columns:220px minmax(0,1fr)}.about .principles{grid-column:1 / -1}}
+  @media(max-width:640px){.about{grid-template-columns:1fr}.portrait{width:min(260px,70%)}}
+  .portrait{position:relative;margin:0 14px 14px 0}
+  .pf{position:relative;display:block}
+  .pf::before{content:"";position:absolute;inset:14px -14px -14px 14px;border:1px solid var(--ember);border-radius:8px;opacity:.55;pointer-events:none}
+  .portrait img{position:relative;display:block;width:100%;aspect-ratio:4/5;object-fit:cover;object-position:50% 30%;border-radius:8px;border:1px solid var(--line-strong);box-shadow:var(--shadow);background:var(--surface-2)}
+  .portrait figcaption{position:relative;margin-top:1.6rem;padding:0;background:none;border:0;display:block;font-size:.7rem;letter-spacing:.08em;color:var(--muted)}
+  .portrait figcaption b{display:block;font-family:"IBM Plex Sans",system-ui,sans-serif;font-size:1.35rem;letter-spacing:0;font-weight:500;color:var(--text);margin-bottom:.1rem}
+  .about .story p{margin:0 0 1rem;font-size:1.08rem;line-height:1.7;color:var(--muted)}
+  .about .story strong{color:var(--text);font-weight:600}
+  .principles{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:1.3rem}
+  .principles li{display:grid;grid-template-columns:2.2rem 1fr;gap:.8rem}
+  .principles .n{font-family:"IBM Plex Sans",system-ui,sans-serif;font-style:italic;font-size:1.7rem;color:var(--ember);line-height:1}
+  .principles h4{margin:0 0 .3rem;font-family:"IBM Plex Sans",system-ui,sans-serif;font-size:1.5rem;font-weight:500;line-height:1.1}
+  .principles p{margin:0;color:var(--muted);font-size:.95rem;line-height:1.6}
+  .career{margin-top:3rem}
+  .timeline{list-style:none;margin:1rem 0 0;padding:0;border-top:1px solid var(--line)}
+  .timeline li{display:grid;grid-template-columns:9rem minmax(0,1fr);gap:.3rem 1.5rem;padding:1rem 0;border-bottom:1px solid var(--line)}
+  .timeline .yr{font-family:"IBM Plex Mono",monospace;font-size:.72rem;letter-spacing:.08em;color:var(--ember);padding-top:.3rem}
+  .timeline h4{margin:0 0 .25rem;font-family:"IBM Plex Sans",sans-serif;font-size:1rem;font-weight:600;color:var(--text)}
+  .timeline h4 span{font-weight:400;color:var(--muted)}
+  .timeline p{margin:0;max-width:78ch;color:var(--muted);font-size:.93rem;line-height:1.55}
+  @media(max-width:640px){.timeline li{grid-template-columns:1fr}}
+  .seeking{margin-top:2.6rem;padding:1.2rem 1.4rem;border:1px solid var(--line-strong);border-radius:8px;background:var(--surface);display:flex;flex-wrap:wrap;gap:1rem 2rem;align-items:center;justify-content:space-between}
+  .seeking p{margin:0;max-width:62ch;color:var(--text);font-size:1.02rem}
+
+  /* ============ Contact / footer ============ */
+  .contact{border-top:1px solid var(--line);position:relative;overflow:hidden}
+  .contact::before{content:"";position:absolute;inset:auto -10% -40% -10%;height:70%;background:radial-gradient(50% 60% at 50% 100%,var(--ember-soft),transparent 70%);pointer-events:none}
+  .contact h2{font-size:clamp(2.2rem,5.6vw,4rem);line-height:1.02;max-width:20ch;position:relative}
+  .contact .actions{position:relative}
+  footer{border-top:1px solid var(--line);padding:2rem 0;color:var(--muted);font-family:"IBM Plex Mono",monospace;font-size:.7rem;letter-spacing:.04em;display:flex;justify-content:space-between;flex-wrap:wrap;gap:.6rem 1.5rem}
+  footer a{color:var(--text);text-decoration:none} footer a:hover{color:var(--ember)}
+
+  /* ============ Quick jump (Ctrl/Cmd+K or /) ============ */
+  .qj{position:fixed;inset:0;z-index:70;display:flex;align-items:flex-start;justify-content:center;padding-top:14vh;background:rgba(8,9,12,.55);backdrop-filter:blur(6px)}
+  .qj[hidden]{display:none}
+  .qj-box{width:min(560px,92vw);background:var(--surface);border:1px solid var(--line-strong);border-radius:8px;box-shadow:var(--shadow);overflow:hidden}
+  .qj input{width:100%;border:0;outline:0;background:transparent;color:var(--text);font:inherit;font-size:1.05rem;padding:1rem 1.2rem;border-bottom:1px solid var(--line)}
+  .qj ul{list-style:none;margin:0;padding:.4rem;max-height:50vh;overflow:auto}
+  .qj li{display:grid;grid-template-columns:2.4rem 1fr auto;align-items:baseline;gap:.8rem;padding:.55rem .8rem;border-radius:5px;cursor:pointer;color:var(--muted)}
+  .qj li .n{font-family:"IBM Plex Sans",system-ui,sans-serif;font-style:italic;font-size:1.1rem;color:var(--ember)}
+  .qj li .t{color:var(--text)}
+  .qj li .d{font-size:.78rem;color:var(--faint)}
+  .qj li.on,.qj li:hover{background:var(--surface-2)}
+  @media(max-width:600px){.qj li{grid-template-columns:1.8rem 1fr;gap:.1rem .6rem}.qj li .d{grid-column:2}}
+  .qj-foot{display:flex;gap:1rem;padding:.55rem 1.2rem;border-top:1px solid var(--line);font-family:"IBM Plex Mono",monospace;font-size:.62rem;letter-spacing:.06em;color:var(--faint)}
+
+
+  .js .reveal{opacity:0;transform:translateY(18px);transition:opacity .8s ease,transform .8s cubic-bezier(.2,.7,.2,1)}
+  .js .reveal.in{opacity:1;transform:none}
+  @media(prefers-reduced-motion:reduce){
+    html{scroll-behavior:auto}
+    .js .reveal,.js .rise{opacity:1;transform:none;transition:none;animation:none}
+    .fr,.plate,.toggle,.btn,.thumb,.work-card,.peek a,.peek img{transition:none}
+    .js .ch-title{animation:none!important;background-position:0 0}
+  }
+
+  /* ============ Technical layout: flat cards, one sans family, mono labels ============ */
+  body::after{display:none}
+  h1,h2,h3{font-weight:700;letter-spacing:-.022em}
+  h1 em,h2 em,h3 em{font-style:normal;color:var(--ember)}
+  .mark{font-weight:700;font-size:1.05rem;letter-spacing:-.01em}
+  .btn{border-radius:8px}
+  .hero{display:block;min-height:0;overflow:visible;border-bottom:0;perspective:none}
+  .hero-inner{padding:clamp(2.4rem,6vh,3.6rem) 0 0}
+  .hero .eyebrow{margin:0 0 .9rem}
+  .hero .eyebrow::before{display:none}
+  .hero h1{font-size:clamp(2.3rem,5.4vw,3.7rem);line-height:1.04;letter-spacing:-.03em}
+  .hero h1 .dot{color:var(--ember)}
+  .hero h1 .nw{white-space:nowrap}
+  .hero .lede{max-width:66ch;margin-top:1rem;font-size:clamp(1.03rem,1.35vw,1.15rem)}
+  .tag{font-family:"IBM Plex Mono",monospace;font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;color:var(--faint)}
+  .toc-wrap{display:block;margin-top:2.2rem;padding-top:1.5rem;border-top:1px solid var(--line-strong)}
+  .toc{list-style:none;margin:.8rem 0 0;padding:0;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:.2rem 1.2rem}
+  .toc a{display:block;padding:.3rem .55rem;border-radius:6px;text-decoration:none;color:var(--text);font-size:.92rem}
+  .toc a:hover{background:var(--ember-soft);color:var(--ember)}
+  @media(max-width:760px){.toc{grid-template-columns:repeat(2,minmax(0,1fr))}}
+  .glance-wrap{scroll-margin-top:84px;margin-top:2.6rem}
+  .glance-head{display:flex;align-items:baseline;flex-wrap:wrap;gap:.3rem 1rem}
+  .glance-head h2{font-size:clamp(1.6rem,3vw,2.1rem)}
+  .glance{list-style:none;margin:1.1rem 0 0;padding:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:.9rem}
+  @media(max-width:1000px){.glance{grid-template-columns:repeat(2,minmax(0,1fr))}}
+  @media(max-width:640px){.glance{grid-template-columns:1fr}}
+  #glance .glance{grid-auto-rows:1fr}
+  .gcard{display:flex;flex-direction:column;border:1px solid var(--line-strong);border-radius:10px;background:var(--surface);padding:1rem 1.15rem 1.1rem}
+  .gcard h3{font-size:1.02rem;letter-spacing:-.01em;margin-bottom:.45rem}
+  .gcard p{margin:0;color:var(--muted);font-size:.93rem;line-height:1.7}
+  .chip{display:inline-block;margin:.1rem 0;font-family:"IBM Plex Mono",monospace;font-size:.72rem;line-height:1.5;padding:0 .45em;border-radius:5px;background:var(--ember-soft);border:1px solid color-mix(in srgb,var(--ember) 28%,transparent);color:var(--text);white-space:nowrap}
+  .jobs{margin-top:2rem}
+  .gcard .where{display:block;margin-bottom:.45rem;font-family:"IBM Plex Mono",monospace;font-size:.66rem;letter-spacing:.1em;text-transform:uppercase;color:var(--patina)}
+  .gcard .chips{display:flex;flex-wrap:wrap;gap:.3rem;margin-top:auto;padding-top:.8rem}
+  .kv dd.chips{display:flex;flex-wrap:wrap;gap:.3rem}
+  #aws,#experience{scroll-margin-top:84px}
+  .chapter::before{display:none}
+  .js .ch-title{background:none;-webkit-text-fill-color:currentColor;animation:none}
+  .js .ch-head.in .ch-title{animation:none}
+  .ch-head{align-items:center;gap:.35rem .9rem;margin-bottom:1.3rem}
+  .ch-num{font-family:"IBM Plex Mono",monospace;font-style:normal;font-weight:500;font-size:.78rem;letter-spacing:.1em;line-height:1;padding:.4rem .5rem;border:1px solid color-mix(in srgb,var(--ember) 45%,transparent);border-radius:6px;background:var(--ember-soft)}
+  .ch-title{font-size:clamp(1.9rem,3.8vw,2.7rem);line-height:1.05}
+  .ch-kicker{font-family:"IBM Plex Mono",monospace;font-size:.7rem;letter-spacing:.14em;text-transform:uppercase;color:var(--faint);margin-top:0}
+  .divider{margin:clamp(2.6rem,6vh,4rem) 0 clamp(1.4rem,3vh,2rem)}
+  .divider svg,.divider::after{display:none}
+  .sec-head h2{font-size:clamp(1.8rem,3.6vw,2.6rem);line-height:1.1}
+  .case-card,.work-card,.infra,.stepper,.plate,.stage,details.more-sys,.seeking,.gcard{border-radius:10px;box-shadow:0 1px 2px rgba(0,0,0,.06)}
+  .plate::after{display:none}
+  .work-card:hover{transform:none}
+  .work-card:hover .wc-media>img,.work-card:hover .wc-media>.zb>img{transform:none}
+  .st b{font-weight:600;font-size:1.02rem}
+  .rail a .num,.pillar .n,.qj li .n{font-family:"IBM Plex Mono",monospace;font-style:normal;font-size:.72rem}
+  .infra-head h4{font-weight:700;font-size:clamp(1.3rem,2.2vw,1.6rem);letter-spacing:-.015em}
+  .pf::before{display:none}
+  .portrait figcaption b{font-weight:700;font-size:1.05rem}
+  .work-card h3{font-size:1.25rem}
+  .contact::before{display:none}
+  .contact h2{font-size:clamp(1.8rem,4vw,2.7rem);max-width:24ch}
+</style>
+</head>
+<body>
+<a class="skip" href="#work">Skip to the work</a>
+
+<header>
+  <div class="wrap bar">
+    <a class="mark" href="#top" aria-label="Top">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><circle cx="12" cy="12" r="9"/><path d="M12 3v18M3 12h18M6.6 6.6l10.8 10.8M17.4 6.6 6.6 17.4" opacity=".55"/><circle cx="12" cy="12" r="2.2" fill="currentColor" stroke="none"/></svg>
+      Ray&nbsp;Hart
+    </a>
+    <nav class="top" aria-label="Site">
+      <div class="navlinks">
+        <a class="nl" href="#work">Work</a>
+        <a class="nl" href="#about">About</a>
+        <a class="nl" href="#contact">Contact</a>
+      </div>
+      <button class="jump" id="jumpBtn" type="button" aria-label="Open the project menu"><span class="jl-d">Jump to</span><span class="jl-m">Menu</span><span class="kbd">Ctrl K</span></button>
+      <button class="toggle" id="themeBtn" aria-label="Switch color theme" title="Switch theme">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M12 3v2M12 19v2M5 12H3M21 12h-2M6 6 4.5 4.5M18 6l1.5-1.5M6 18l-1.5 1.5M18 18l1.5 1.5"/><circle cx="12" cy="12" r="3.4"/></svg>
+      </button>
+    </nav>
+  </div>
+</header>
+
+<aside class="rail" aria-label="Sections">
+  <span class="rl">On this page</span>
+  <a href="#onthejob"><span class="num">&middot;</span><span>On the job</span></a>
+  <a href="#pixelmage"><span class="num">01</span><span>Pixel Mage</span></a>
+  <a href="#nexus"><span class="num">02</span><span>Nexus Habitat</span></a>
+  <a href="#moongate"><span class="num">03</span><span>Moongate</span></a>
+  <a href="#more"><span class="num">+</span><span>More work</span></a>
+  <a href="#about"><span class="num">&middot;</span><span>About</span></a>
+</aside>
+
+<section class="hero" id="top">
+  <div class="wrap hero-inner">
+    <p class="eyebrow rise">Engineering &middot; DevOps &middot; Product &middot; IT&nbsp;leadership &middot; Data&nbsp;analyst &middot; AI&nbsp;agents</p>
+    <h1 class="rise">Ray Hart<span class="dot">.</span> <span class="nw">The Whole Stack</span></h1>
+    <p class="lede rise">Twelve years across IT and software, from networks and servers to code, system integrations, agentic workflows and custom data models. Today I&rsquo;m Director of Technology at a seasonal attraction, and I build AI software on my own time, including an agent-directed video pipeline deployed on AWS with Terraform and tools my team uses every day.</p>
+    <div class="actions rise">
+        <a class="btn primary" href="#work">Explore selected work<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 5v14M6 13l6 6 6-6"/></svg></a>
+        <a class="btn" href="https://www.linkedin.com/in/raymond-h-81576b127/"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M4.98 3.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5zM3 9.5h4V21H3zM9.5 9.5h3.8v1.6h.05c.53-1 1.83-2.05 3.77-2.05 4.03 0 4.78 2.65 4.78 6.1V21h-4v-5.2c0-1.24-.02-2.84-1.73-2.84-1.73 0-2 1.35-2 2.75V21h-4z"/></svg>LinkedIn</a>
+      </div>
+    <nav class="toc-wrap rise" aria-label="On this page">
+      <span class="tag">On this page</span>
+      <ul class="toc">
+        <li><a href="#glance">At a glance</a></li>
+        <li><a href="#onthejob">Built on the job</a></li>
+        <li><a href="#pixelmage">Pixel Mage</a></li>
+        <li><a href="#aws">AWS deployment</a></li>
+        <li><a href="#nexus">Nexus Habitat</a></li>
+        <li><a href="#moongate">Project Moongate</a></li>
+        <li><a href="#netops">NetOps Console</a></li>
+        <li><a href="#pmtool">PM Tool</a></li>
+        <li><a href="#sayviz">SayViz</a></li>
+        <li><a href="#videostumble">VideoStumble</a></li>
+        <li><a href="#viral">Viral Video Analyzer</a></li>
+        <li><a href="#kyko">Kyko Construction</a></li>
+        <li><a href="#about">About me</a></li>
+        <li><a href="#experience">Experience</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </nav>
+    <div class="glance-wrap" id="glance">
+      <div class="glance-head reveal"><h2>At a glance</h2><span class="tag">The short version</span></div>
+      <ul class="glance">
+        <li class="gcard reveal"><h3>Twelve years in IT</h3><p>From a web host&rsquo;s support desk in 2014, through managed services and enterprise systems, to Director of Technology at a seasonal attraction. In several of my IT roles I was also the technical project manager on standardization and digitization efforts.</p></li>
+        <li class="gcard reveal"><h3>Data models and dashboards</h3><p>Custom data models and dashboards for several employers, from refinery compliance reporting at Phillips 66 to a ticket sellout dashboard for pricing at my current job, including the ETL and data migrations behind them.</p><div class="chips"><span class="chip">Power BI</span><span class="chip">DAX</span><span class="chip">Star schema</span><span class="chip">SQL</span><span class="chip">ETL</span></div></li>
+        <li class="gcard reveal"><h3>Agents, harnesses and evals</h3><p>Agent loops on the Anthropic SDK with fixed tools, human checkpoints and spending limits, tested like any other code, with eval harnesses that score model output before I choose a model.</p><div class="chips"><span class="chip">Anthropic SDK</span><span class="chip">Tool use</span><span class="chip">MCP</span><span class="chip">Evals</span></div></li>
+        <li class="gcard reveal"><h3>Deployed with Terraform</h3><p>Pixel Mage ran on AWS from eighteen Terraform files, with one container image for the API and the render worker and 1,600+ automated tests.</p><div class="chips"><span class="chip">ECS Fargate</span><span class="chip">SQS</span><span class="chip">S3</span><span class="chip">DynamoDB</span><span class="chip">CloudFront</span></div></li>
+        <li class="gcard reveal"><h3>Tools in daily use</h3><p>A self-hosted project management tracker, an operations data dashboard, and a network console that my team relies on daily.</p></li>
+        <li class="gcard reveal"><h3>Hands-on networking</h3><p>I plan and carry out network infrastructure upgrades, install switches and wireless access points, configure the network, run the cutover from old to new, and keep it all maintained.</p><div class="chips"><span class="chip">Switches</span><span class="chip">Access points</span><span class="chip">VLANs</span><span class="chip">UniFi</span></div></li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<main>
+<section id="onthejob" class="wrap" data-jump="Built on the job|tools I built for employers">
+  <div class="sec-head reveal">
+    <span class="eyebrow">Built on the job</span>
+    <h2>Tools I built for the places I&rsquo;ve <em>worked</em>.</h2>
+    <p>This software stays with those employers, so there are no screenshots here.</p>
+  </div>
+  <ul class="glance jobs">
+      <li class="gcard reveal"><span class="where">Seasonal attraction &middot; 2026</span><h3>Sellout dashboard</h3><p>A Power BI sellout dashboard for pricing decisions, fed from the ticketing API through Google Apps Script. I also built the interactive season calendar on the live website.</p><div class="chips"><span class="chip">Power BI</span><span class="chip">Google Apps Script</span><span class="chip">REST API</span></div></li>
+      <li class="gcard reveal"><span class="where">Arrow Child &amp; Family Ministries &middot; 2025</span><h3>Device and support dashboards</h3><p>Power BI dashboards for device state, patch status and support metrics, plus PowerShell and Microsoft Graph scripts that set up accounts, assign licenses and produce compliance reports.</p><div class="chips"><span class="chip">Power BI</span><span class="chip">PowerShell</span><span class="chip">Microsoft Graph</span><span class="chip">Intune</span></div></li>
+      <li class="gcard reveal"><span class="where">Phillips 66 &middot; 2023</span><h3>Refinery compliance platform</h3><p>Led the design and implementation of a compliance platform with built-in analytics for operators at ten US refineries, and operator compliance rose 15%. Power BI dashboards and Power Apps intake forms replaced manual reporting for compliance, vendor visibility and data quality.</p><div class="chips"><span class="chip">Power BI</span><span class="chip">Power Apps</span></div></li>
+      <li class="gcard reveal"><span class="where">PSS Industrial Group &middot; 2022</span><h3>E-commerce catalogue and site</h3><p>Reorganized the online product catalogue around product popularity, redesigned much of the e-commerce site, and merged product data during a platform migration without losing data integrity.</p><div class="chips"><span class="chip">Sales data</span><span class="chip">Product data</span><span class="chip">Web design</span><span class="chip">Migration</span></div></li>
+      <li class="gcard reveal"><span class="where">PSS Industrial Group &middot; 2022</span><h3>Field inspection records, standardized</h3><p>Standardized how inspection records were handled across 15+ inspection locations. Paper forms became digital forms, OCR read and ingested the data, and documents moved to Google Cloud storage with credentialed access. A web app on a Firestore database let staff pull up any record in the field by scanning a QR code.</p><div class="chips"><span class="chip">GCP</span><span class="chip">Cloud Storage</span><span class="chip">Firestore</span><span class="chip">OCR</span><span class="chip">QR codes</span><span class="chip">Standardization</span></div></li>
+      <li class="gcard reveal"><span class="where">PSS Industrial Group &middot; 2022</span><h3>Support ticketing system</h3><p>Rolled out ServiceDesk Plus so support requests from every department came in the same way and were routed to the right person.</p><div class="chips"><span class="chip">ServiceDesk Plus</span></div></li>
+      <li class="gcard reveal"><span class="where">Google (contract) &middot; 2018</span><h3>Nest product investigations</h3><p>Worked with the Google Nest product development team to help engineers close new-product investigations faster, coordinating testing with Google employees around the world. Investigations closed three months ahead of schedule, and a support evaluation program I designed saved more than $100,000 over six months in unqualified RMAs.</p><div class="chips"><span class="chip">Beta testing</span><span class="chip">Root cause analysis</span><span class="chip">Analytics</span></div></li>
+  </ul>
+</section>
+
+<section id="work" class="wrap" data-jump="Selected work|the three projects to start with">
+  <div class="sec-head reveal">
+    <span class="eyebrow">Selected work</span>
+    <h2>Two <em>AI video</em> systems, and an online world built from a seed.</h2>
+    <p class="byline"><b>Independent projects</b> &middot; designed and developed by me</p>
+  </div>
+
+  <!-- I. PIXEL MAGE -->
+  <div class="divider" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.1"><circle cx="12" cy="12" r="9"/><path d="M12 3l1.6 7.4L21 12l-7.4 1.6L12 21l-1.6-7.4L3 12l7.4-1.6z" fill="currentColor" stroke="none" opacity=".9"/></svg></div>
+  <article class="chapter" id="pixelmage" data-num="01" data-jump="Pixel Mage|music videos with an AI agent as creative director">
+    <div class="ch-head reveal"><span class="ch-num">01</span><h3 class="ch-title">Pixel Mage</h3><div class="ch-kicker">Music videos with an AI agent as creative director</div></div>
+    <div class="case">
+      <div class="case-media reveal">
+        <figure class="stage">
+          <video src="media/here-in-4k-live.mp4" poster="images/pm-here-in-4k-live.jpg" controls playsinline preload="none" aria-label="Here in 4K (Live), a music video made with Pixel Mage"></video>
+          <figcaption><span><b>Here in 4K (Live)</b> &middot; 4:00 &middot; 9:16 for Shorts</span><span>made with Pixel Mage</span></figcaption>
+        </figure>
+      </div>
+      <aside class="case-card reveal">
+        <dl class="kv"><dt>Role</dt><dd>Sole developer</dd><dt>Status</dt><dd class="live">Nine finished videos. The AWS deployment is offline for now</dd><dt>Built with</dt><dd class="chips"><span class="chip">Python</span><span class="chip">Anthropic SDK</span><span class="chip">librosa</span><span class="chip">Kling</span><span class="chip">Veo</span><span class="chip">AWS</span><span class="chip">Terraform</span></dd></dl>
+        <p class="lead">A music-video system for artists. Give it a track and a direction. A Claude agent plans the video and calls a set of tools to produce it.</p>
+        <div class="call"><b>Human approval and budget limits</b><p>The agent never approves its own work. It acts only through thirteen fixed tools, stops at five checkpoints for the artist&rsquo;s answer, and any tool that would go over budget refuses and tells it to ask.</p></div>
+        <ul class="hl">
+          <li>The tool loop is written by hand on the Anthropic SDK, so every call can be checked and the run is saved every ten calls.</li>
+          <li>librosa finds the beats and section changes so cuts land on the music, and a fifteen-cut storyboard keeps characters consistent.</li>
+        </ul>
+        <div class="facts"><span>545 commits</span><span>1,600+ automated tests</span></div>
+      </aside>
+    </div>
+    <div class="reel-head reveal"><span class="eyebrow">The other eight</span><p>Click one to watch.</p></div>
+    <div class="strip reveal" aria-label="Pixel Mage videos">
+      <button class="thumb" type="button" data-src="media/king-me.mp4" data-title="King Me" data-dur="4:45"><img src="images/pm-king-me.jpg" alt="King Me" loading="lazy"><span class="lbl">King Me<i>4:45</i></span></button>
+      <button class="thumb" type="button" data-src="media/dirt-road-saint.mp4" data-title="Dirt Road Saint" data-dur="1:32"><img src="images/pm-dirt-road-saint.jpg" alt="Dirt Road Saint" loading="lazy"><span class="lbl">Dirt Road Saint<i>1:32</i></span></button>
+      <button class="thumb" type="button" data-src="media/dirty-money-family.mp4" data-title="Dirty Money (Family)" data-dur="1:28"><img src="images/pm-dirty-money-family.jpg" alt="Dirty Money (Family)" loading="lazy"><span class="lbl">Dirty Money (Family)<i>1:28</i></span></button>
+      <button class="thumb" type="button" data-src="media/everything-ive-touched.mp4" data-title="Everything I've Touched" data-dur="3:10"><img src="images/pm-everything-ive-touched.jpg" alt="Everything I've Touched" loading="lazy"><span class="lbl">Everything I've Touched<i>3:10</i></span></button>
+      <button class="thumb" type="button" data-src="media/room-temperature.mp4" data-title="Room Temperature" data-dur="3:24"><img src="images/pm-room-temperature.jpg" alt="Room Temperature" loading="lazy"><span class="lbl">Room Temperature<i>3:24</i></span></button>
+      <button class="thumb" type="button" data-src="media/silence-crying.mp4" data-title="Silence Crying" data-dur="2:04"><img src="images/pm-silence-crying.jpg" alt="Silence Crying" loading="lazy"><span class="lbl">Silence Crying<i>2:04</i></span></button>
+      <button class="thumb" type="button" data-src="media/state-of-mind.mp4" data-title="State of Mind" data-dur="3:17"><img src="images/pm-state-of-mind.jpg" alt="State of Mind" loading="lazy"><span class="lbl">State of Mind<i>3:17</i></span></button>
+      <button class="thumb" type="button" data-src="media/bars.mp4" data-title="BARS" data-dur="0:55"><img src="images/pm-bars.jpg" alt="BARS" loading="lazy"><span class="lbl">BARS<i>0:55</i></span></button>
+    </div>
+    <div class="infra reveal" id="aws">
+      <div class="infra-head">
+        <div><span class="eyebrow">Infrastructure</span><h4>AWS deployment</h4></div>
+        <p>Pixel Mage ran at pixelmage.ai on AWS. Every piece below is defined in Terraform, and the same code also runs locally with no AWS account.</p>
+      </div>
+      <div class="flow" aria-label="The AWS architecture, request path and render path">
+        <div class="lane core"><span class="lane-l">Requests</span><span class="node"><b>Route 53</b><i>DNS for the domain</i></span><span class="arr" aria-hidden="true">&rarr;</span><span class="node"><b>CloudFront</b><i>CDN, caches assets for a year</i></span><span class="arr" aria-hidden="true">&rarr;</span><span class="node"><b>Load balancer</b><i>HTTPS, health checks</i></span><span class="arr" aria-hidden="true">&rarr;</span><span class="node"><b>API on Fargate</b><i>FastAPI in a container</i></span></div>
+        <div class="lane core"><span class="lane-l">Render jobs</span><span class="node"><b>API on Fargate</b><i>queues the job</i></span><span class="arr" aria-hidden="true">&rarr;</span><span class="node"><b>SQS</b><i>work queue plus a dead-letter queue</i></span><span class="arr" aria-hidden="true">&rarr;</span><span class="node"><b>Worker on Fargate</b><i>renders and keeps its lease</i></span><span class="arr" aria-hidden="true">&rarr;</span><span class="node"><b>S3 and DynamoDB</b><i>artifacts, jobs, users, run state</i></span></div>
+        <div class="lane side"><span class="lane-l">Around it</span><span class="node"><b>ECR</b><i>images scanned on push</i></span><span class="node"><b>Secrets Manager</b><i>model and OAuth keys</i></span><span class="node"><b>IAM</b><i>a role for each task</i></span><span class="node"><b>CloudWatch</b><i>30 days of logs</i></span><span class="node"><b>ACM</b><i>the domain&rsquo;s certificate</i></span></div>
+      </div>
+      <ul class="hl">
+        <li>Eighteen Terraform files define it all, from DNS and the certificate to the task definitions and IAM roles.</li>
+        <li>One container image runs as both the API and the render worker, each with its own command.</li>
+        <li>A render can take many minutes, so the worker extends its SQS lease every five minutes. A job that fails three times goes to a dead-letter queue.</li>
+        <li>The worker runs as a single task on purpose. Two workers could write the same run&rsquo;s state, so scaling out waits for a DynamoDB conditional claim.</li>
+        <li>deploy.sh runs the tests, pushes the image to ECR and rolls the services. One flag scales everything to zero when it isn&rsquo;t in use.</li>
+        <li>The artifact bucket blocks public access and deletes run files after 90 days. The DynamoDB tables bill per request.</li>
+      </ul>
+    </div>
+    <figure class="plate reveal" style="margin-top:1.4rem"><img src="images/pixelmage-gallery.jpg" alt="Pixel Mage's own gallery, with runs marked Waiting at G1 and Director working" loading="lazy"><figcaption><span>The tool&rsquo;s own gallery, with runs waiting at a human checkpoint and the director at work</span><b>real app</b></figcaption></figure>
+  </article>
+
+  <!-- II. NEXUS HABITAT -->
+  <div class="divider" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.1"><circle cx="12" cy="12" r="9"/><path d="M12 3l1.6 7.4L21 12l-7.4 1.6L12 21l-1.6-7.4L3 12l7.4-1.6z" fill="currentColor" stroke="none" opacity=".9"/></svg></div>
+  <article class="chapter flip" id="nexus" data-num="02" data-jump="Nexus Habitat|an AI video factory that runs its own channels">
+    <div class="ch-head reveal"><span class="ch-num">02</span><h3 class="ch-title">Nexus Habitat</h3><div class="ch-kicker">An AI video factory that runs its own channels</div></div>
+    <div class="case">
+      <div class="case-media reveal">
+        <div class="nx-media nx-framed">
+          <figure class="nx-player"><video id="nxVideo" src="media/nexus-latrine.mp4" poster="images/nexus-latrine.jpg" controls playsinline preload="none" aria-label="A Weird History episode made by Nexus Habitat"></video><figcaption><span class="nx-title">The Day German Nobles Drowned in a Castle Toilet</span><b class="nx-dur">3:43</b></figcaption></figure>
+          <div class="nx-eps" role="group" aria-label="Weird History episodes"><button class="ep on" type="button" aria-pressed="true" data-src="media/nexus-latrine.mp4" data-poster="images/nexus-latrine.jpg" data-title="The Day German Nobles Drowned in a Castle Toilet" data-dur="3:43"><img src="images/nexus-latrine.jpg" alt="" loading="lazy"><span>German nobles in a castle toilet</span></button><button class="ep" type="button" aria-pressed="false" data-src="media/nexus-guilds.mp4" data-poster="images/nexus-guilds.jpg" data-title="Medieval Guilds Had Inspectors Who Raided Your Shop Over Bad Bread" data-dur="6:36"><img src="images/nexus-guilds.jpg" alt="" loading="lazy"><span>Guild inspectors and bad bread</span></button><button class="ep" type="button" aria-pressed="false" data-src="media/nexus-clisson.mp4" data-poster="images/nexus-clisson.jpg" data-title="The 14th-Century Woman Who Said &lsquo;Fine, I&rsquo;ll Be a Pirate Then&rsquo;" data-dur="4:11"><img src="images/nexus-clisson.jpg" alt="" loading="lazy"><span>The noblewoman turned pirate</span></button></div>
+        </div>
+      </div>
+      <aside class="case-card reveal">
+        <dl class="kv"><dt>Role</dt><dd>Sole developer</dd><dt>Status</dt><dd class="live">Working system, 131 films in its library</dd><dt>Built with</dt><dd class="chips"><span class="chip">Python</span><span class="chip">Claude</span><span class="chip">xAI images</span><span class="chip">ElevenLabs</span><span class="chip">ffmpeg</span></dd></dl>
+        <p class="lead">A local video factory for story channels. Give it one sentence, or let a channel pitch its own next episode, and it produces a finished, narrated short film with music, a thumbnail and upload details.</p>
+        <div class="call"><b>Recipes, not agent code</b><p>Creative work happens in a lab session and is saved as a channel recipe, which is plain data. Production only ever runs recipes, never freshly written agent code, so a new idea can&rsquo;t break a working pipeline.</p></div>
+        <ul class="hl">
+          <li>Each channel runs Off, Propose or Auto. In Propose it pitches episodes from its own history, and I approve each one before it builds on schedule.</li>
+          <li>Every paid build sits behind limits. Channels start Off, each has a daily cap set by its cadence, one scheduled build runs at a time, and one button pauses everything.</li>
+          <li>An agent grades every finished episode on nine criteria, I rate it too, and a taste ledger tracks how far its grades sit from mine.</li>
+        </ul>
+        <div class="facts"><span>240 commits</span><span>since May 2026</span></div>
+      </aside>
+    </div>
+    <div class="infra reveal">
+      <div class="infra-head">
+        <div><span class="eyebrow">Pipeline</span><h4>How one episode gets made</h4></div>
+        <p>Every stage writes a small status file, and the app&rsquo;s factory floor draws each stage live from those files.</p>
+      </div>
+      <div class="flow" aria-label="The Nexus Habitat pipeline">
+        <div class="lane core"><span class="lane-l">From one sentence</span><span class="node"><b>Claude</b><i>script, title and shot plan</i></span><span class="arr" aria-hidden="true">&rarr;</span><span class="node"><b>xAI</b><i>renders the frames</i></span><span class="arr" aria-hidden="true">&rarr;</span><span class="node"><b>Ken Burns engine</b><i>camera motion</i></span><span class="arr" aria-hidden="true">&rarr;</span><span class="node"><b>Voice and music</b><i>ElevenLabs narration and a score</i></span><span class="arr" aria-hidden="true">&rarr;</span><span class="node"><b>ffmpeg</b><i>the final cut and package</i></span></div>
+        <div class="lane side"><span class="lane-l">Around it</span><span class="node"><b>Channel recipe</b><i>look, shot grammar, voice, cadence</i></span><span class="node"><b>Producer</b><i>Off, Propose or Auto</i></span><span class="node"><b>Spend limits</b><i>daily caps, one build at a time</i></span><span class="node"><b>Grader</b><i>nine criteria and my rating</i></span></div>
+      </div>
+    </div>
+    <div class="reel-head reveal"><span class="eyebrow">The app itself</span><p>Click any screen to see it full size.</p></div>
+    <div class="shots4 reveal"><figure class="plate"><img src="images/nexus-library.jpg" alt="Eight Weird History episodes in the Nexus Habitat library" loading="lazy"><figcaption><span>The library, filtered to the Weird History channel</span></figcaption></figure><figure class="plate"><img src="images/nexus-floor.jpg" alt="The factory floor, with rooms for archive processing, metadata, thumbnails, assembly and operations" loading="lazy"><figcaption><span>The factory floor, drawn live from each stage&rsquo;s status file</span></figcaption></figure><figure class="plate"><img src="images/nexus-grade.jpg" alt="An agent grade of 8.5 out of 10 across nine criteria, beside the controls for my own rating" loading="lazy"><figcaption><span>The agent&rsquo;s grade beside my rating</span></figcaption></figure><figure class="plate"><img src="images/nexus-produce.jpg" alt="The production line for the Weird History channel, with studio totals and approved episodes" loading="lazy"><figcaption><span>A channel&rsquo;s production line</span></figcaption></figure></div>
+  </article>
+
+  <!-- III. MOONGATE -->
+  <div class="divider" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.1"><circle cx="12" cy="12" r="9"/><path d="M12 3l1.6 7.4L21 12l-7.4 1.6L12 21l-1.6-7.4L3 12l7.4-1.6z" fill="currentColor" stroke="none" opacity=".9"/></svg></div>
+  <article class="chapter" id="moongate" data-num="03" data-jump="Project Moongate|an online world and the engine under it">
+    <div class="ch-head reveal"><span class="ch-num">03</span><h3 class="ch-title">Project Moongate</h3><div class="ch-kicker">An online world and the engine under it</div></div>
+    <div class="case">
+      <div class="case-media reveal">
+        <figure class="stepper" data-stepper style="--n:3">
+          <div class="frames">
+            <img class="fr contain" src="images/moongate-map.jpg" data-origin="53% 47%" alt="The whole Moongate overworld, a generated map of continents, seas, towns and ruins" loading="lazy">
+            <img class="fr" src="images/moongate-aerial.jpg" data-origin="54% 46%" alt="Aerial view of a generated island capital joined to the mainland by a bridge" loading="lazy">
+            <img class="fr" src="images/moongate-lane.jpg" alt="Street-level view down a stone lane inside a generated town, laundry strung between the houses" loading="lazy">
+            <button class="enl" type="button" aria-label="See this image full size"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 4h6v6M10 20H4v-6M20 4l-7 7M4 20l7-7"/></svg></button>
+            <button class="play" type="button"><svg viewBox="0 0 12 12"><path d="M2 1l9 5-9 5z" fill="currentColor"/></svg>Continent to street</button>
+          </div>
+          <div class="steps" role="tablist" aria-label="Zoom level">
+            <button class="st on" type="button" role="tab" aria-selected="true"><i>01</i><b>Continent</b><span>the whole world, generated from one seed</span></button>
+            <button class="st" type="button" role="tab" aria-selected="false"><i>02</i><b>Settlement</b><span>an island capital, placed and built by code</span></button>
+            <button class="st" type="button" role="tab" aria-selected="false"><i>03</i><b>Street</b><span>a lane inside it, at eye level</span></button>
+          </div>
+        </figure>
+      </div>
+      <aside class="case-card reveal">
+        <dl class="kv"><dt>Role</dt><dd>Sole developer</dd><dt>Status</dt><dd class="live">In active development</dd><dt>Built with</dt><dd class="chips"><span class="chip">C# server</span><span class="chip">Godot client</span><span class="chip">Python world tools</span></dd></dl>
+        <p class="lead">An original online RPG in the spirit of Ultima Online. Every coastline, road, building and dungeon is generated from a seed, and a custom C# server streams the world to a Godot client.</p>
+        <div class="call"><b>Testing inside every building</b><p>Towns connected on the map, but fences and furniture still blocked some shops. I reverted the change and added checks that walk into each building.</p></div>
+        <ul class="hl">
+          <li>Automated checks catch what screenshots don&rsquo;t reveal, including unreachable interiors and a wall standing nine metres into the air.</li>
+          <li>One registry owns every packet id and shared number, and the build fails when the docs and the code disagree.</li>
+        </ul>
+        <div class="facts"><span>1,356 commits</span><span>incl. an Unreal client experiment</span></div>
+      </aside>
+    </div>
+    <details class="more-sys reveal"><summary>The eight systems underneath</summary>
+      <div class="pillars" aria-label="Engineering subsystems">
+      <div class="pillar" data-side="tech"><span class="n">i</span><h4>Backend &amp; wire protocol</h4><p>Authoritative C# server with a versioned binary protocol. Every packet id lives in one registry.</p></div>
+      <div class="pillar" data-side="tech"><span class="n">ii</span><h4>World generation</h4><p>Continents from a seed, with relief, water, towns, roads, and route-checked reachability down to building interiors.</p></div>
+      <div class="pillar" data-side="tech"><span class="n">iii</span><h4>Procedural architecture</h4><p>Houses, walls, castles, cloisters, ruins and dungeons from rule sets, with interiors you can walk.</p></div>
+      <div class="pillar" data-side="magick"><span class="n">iv</span><h4>Spell VFX</h4><p>A procedural effects pipeline for charge, projectile and impact, tuned by eye in a live harness.</p></div>
+      <div class="pillar" data-side="magick"><span class="n">v</span><h4>Combat systems</h4><p>Melee, ranged and spells on one geometry, with skillshot targeting, predicted projectiles and hit feedback.</p></div>
+      <div class="pillar" data-side="tech"><span class="n">vi</span><h4>Client &amp; rendering</h4><p>Godot client with chunk streaming, 600&nbsp;m of terrain relief, swimming and traversal.</p></div>
+      <div class="pillar" data-side="magick"><span class="n">vii</span><h4>Asset pipeline</h4><p>Local generative 3D (ComfyUI + Hunyuan3D) feeding props into the world under one art bible.</p></div>
+      <div class="pillar" data-side="tech"><span class="n">viii</span><h4>Tooling &amp; QA</h4><p>One-command test battery and headless probes. The build fails when docs and code disagree.</p></div>
+    </div>
+    </details>
+  </article>
+
+</section>
+
+<section id="more" class="wrap" data-jump="More work|six more projects, from a network console to a contractor's site">
+  <div class="sec-head reveal">
+    <span class="eyebrow">More work</span>
+    <h2>Six more, starting with the tools my team <em>uses every day</em>.</h2>
+  </div>
+  <div class="grid">
+    <article class="work-card reveal" id="netops" data-jump="NetOps Console|one screen for a whole site network">
+      <figure class="wc-media"><img src="images/netops-redacted.jpg" alt="The NetOps Console log view in demo mode, with device names, addresses and site details blurred" loading="lazy"><span class="wc-tag">real app, demo data, names blurred</span></figure>
+      <div class="wc-body">
+        <span class="wc-status">Internal tool, runs on site</span>
+        <h3>NetOps Console</h3>
+        <p>One screen for a whole site network, with a live map, the device tree, alerts merged with the controller&rsquo;s own events, and a standing audit.</p>
+        <details><summary>How it works</summary><ul class="hl">
+          <li>Selecting any device shows its path from the internet, its ports, and what goes down with it.</li>
+          <li>Every reading goes to SQLite with a timestamp, so a problem can be traced after the fact.</li>
+          <li>No third-party dependencies. Three files, using Python&rsquo;s standard library.</li>
+          <li>A demo mode runs a made-up site through the same alert rules, which is what the screenshot shows.</li>
+        </ul></details>
+      </div>
+    </article>
+    <article class="work-card reveal" id="pmtool" data-jump="PM Tool|a self-hosted project board for a small team">
+      <figure class="wc-media"><img src="images/pmtool-board.jpg" alt="The PM Tool board with Backlog, Todo, In Progress and Done columns, filled with sample tasks" loading="lazy"><span class="wc-tag">real app, sample board</span></figure>
+      <div class="wc-body">
+        <span class="wc-status">In daily use by my team</span>
+        <h3>PM Tool</h3>
+        <p>A self-hosted project board for a small team, with shared tasks, protected deadlines and team knowledge in one place.</p>
+        <details><summary>How it works</summary><ul class="hl">
+          <li>Claude turns pasted meeting notes into assigned, dated tasks and drafts the weekly digest.</li>
+          <li>Ask &ldquo;@ai what&rsquo;s overdue?&rdquo; in team chat and it reads the same tasks you do.</li>
+          <li>One FastAPI file over SQLite and a plain JavaScript front end, with no build step.</li>
+        </ul></details>
+      </div>
+    </article>
+    <article class="work-card reveal" id="sayviz" data-jump="SayViz|analytics and BI from a plain-English question">
+      <figure class="wc-media"><img src="images/sayviz-start.jpg" alt="SayViz's start screen, with steps to upload data and ask a question, and a panel titled The AI never sees your data" loading="lazy"><span class="inset"><img src="images/sayviz-chart.jpg" alt="A chart SayViz produced, showing net monthly recurring revenue movement by month" loading="lazy"></span><span class="wc-tag">real app and output</span></figure>
+      <div class="wc-body">
+        <span class="wc-status">Working prototype, runs locally</span>
+        <h3>SayViz</h3>
+        <p>Business intelligence from a plain-English question. It builds the data model and documents every measure, then draws the dashboard. Its first test run built 7 dashboards from 3 raw CSV files in about three minutes.</p>
+        <details><summary>How it works</summary><ul class="hl">
+          <li>DuckDB and Polars keep large files fast on a laptop.</li>
+          <li>Only anonymized summaries go to the model (Grok, or Ollama fully offline), so the raw data never leaves the machine.</li>
+          <li>Change one measure and only what depends on it recomputes.</li>
+        </ul></details>
+      </div>
+    </article>
+    <article class="work-card reveal" id="videostumble" data-jump="VideoStumble|one button, one video you'd never find">
+      <figure class="wc-media"><img src="images/videostumble-stumble.jpg" alt="VideoStumble after a stumble for blacksmithing, playing a forging video" loading="lazy"><span class="wc-tag">real app, live stumble</span></figure>
+      <div class="wc-body">
+        <span class="wc-status">Runs locally</span>
+        <h3>VideoStumble</h3>
+        <p>Type any topic, or none, and discover a video you might not have searched for.</p>
+        <details><summary>How it works</summary><ul class="hl">
+          <li>A store of 7,667 videos sorted into 56,748 topics.</li>
+          <li>Serving is deliberately simple, using topic match, quality and whether you&rsquo;ve seen it. The AI curates and tags, but it doesn&rsquo;t rank.</li>
+          <li>Promoted videos must pass quality checks and stay below 8% of stumbles.</li>
+        </ul></details>
+      </div>
+    </article>
+    <article class="work-card reveal" id="viral" data-jump="Viral Video Analyzer|a short video, taken apart into a structured brief">
+      <div class="wc-media type" aria-hidden="true"><pre><b>scene 03</b>  00:07.4 to 00:11.9
+  cut: hard  &middot;  shot: close, handheld
+  words: "I didn't think she'd come back"
+  characters: A (lead), B (enters)
+  beat: the turn</pre></div>
+      <div class="wc-body">
+        <span class="wc-status">Command-line tool</span>
+        <h3>Viral Video Analyzer</h3>
+        <p>Takes a short video apart, down to every scene cut, the words with timestamps, what&rsquo;s on screen, and how the characters and story develop. The result is a structured brief a video model like Sora 2 can follow.</p>
+        <details><summary>How it works</summary><ul class="hl">
+          <li>Whisper for word-level transcripts, plus automatic scene detection.</li>
+          <li>Gemini Vision by default, with OpenAI as a drop-in.</li>
+          <li>Writes JSON for machines and plain text for people.</li>
+        </ul></details>
+      </div>
+    </article>
+    <article class="work-card reveal" id="kyko" data-jump="Kyko Construction|a Houston contractor's site">
+      <figure class="wc-media"><img src="images/kyko-home.jpg" alt="Kyko Construction's home page, with the headline Better Windows, Better Home, Guaranteed beside a free-estimate form" loading="lazy"><span class="wc-tag">real site</span></figure>
+      <div class="wc-body">
+        <span class="wc-status">Client site</span>
+        <h3>Kyko Construction</h3>
+        <p>A marketing site for a Houston window and renovation contractor, built to turn visitors into quote requests.</p>
+        <details><summary>How it works</summary><ul class="hl">
+          <li>Five design directions were written up and scored before any code.</li>
+          <li>React and Vite on an accessible Radix UI component system, with an image-optimization step for the photo-heavy pages.</li>
+        </ul></details>
+      </div>
+    </article>
+  </div>
+</section>
+
+<section id="about" class="wrap" data-jump="About me|my background and experience">
+  <div class="sec-head reveal">
+    <h2>About me</h2>
+  </div>
+  <div class="about">
+    <figure class="portrait reveal"><span class="pf"><img src="images/raymond-hart.jpg" alt="Portrait of Raymond Hart" loading="lazy"></span><figcaption><b>Ray Hart</b>Houston area, Texas</figcaption></figure>
+    <div class="story reveal">
+      <p>I&rsquo;m Ray Hart. I started on a web host&rsquo;s support desk in 2014 and worked up through managed services, enterprise systems and IT leadership.</p>
+      <p>Today I&rsquo;m Director of Technology at a seasonal attraction. On my own time I build the projects on this page.</p>
+      <p><strong>I like seeing a problem through from start to finish, including the parts that aren&rsquo;t code.</strong></p>
+    </div>
+  </div>
+  <div class="career" id="experience">
+    <span class="eyebrow reveal">Experience</span>
+    <ol class="timeline">
+      <li class="reveal"><span class="yr">2026 to now</span><div><h4>Director of Technology <span>&middot; a seasonal attraction</span></h4><p>Runs the network, ticketing, point of sale, analytics and website. Sized the network and point of sale for peak-night crowds, connected the ticketing API through Google Apps Script, built a Power BI sellout dashboard for pricing decisions, and set up an automated video pipeline for marketing.</p></div></li>
+      <li class="reveal"><span class="yr">2025 to 2026</span><div><h4>Systems Engineer <span>&middot; Arrow Child &amp; Family Ministries</span></h4><p>Ran Microsoft 365, Entra ID and Intune for the organization, and automated account setup, licensing and compliance reports with PowerShell and Microsoft Graph.</p></div></li>
+      <li class="reveal"><span class="yr">2024 to 2025</span><div><h4>DevOps Engineer and IT Operations Manager <span>&middot; NorthSky Supply</span></h4><p>Built the company&rsquo;s IT function from nothing, including the network, endpoint security, runbooks, change control and access reviews.</p></div></li>
+      <li class="reveal"><span class="yr">2023 to 2024</span><div><h4>IT Systems Administrator II <span>&middot; Phillips 66</span></h4><p>Owned business applications across ten US refineries. Led the design and implementation of a compliance platform that raised operator compliance by 15%.</p></div></li>
+      <li class="reveal"><span class="yr">2022 to 2023</span><div><h4>Applications Administrator II <span>&middot; PSS Industrial Group</span></h4><p>Built a GCP web app for document storage and field data collection, and ran six company websites and an e-commerce platform.</p></div></li>
+      <li class="reveal"><span class="yr">2021 to 2022</span><div><h4>IT Systems Administrator <span>&middot; docTRONX, a managed service provider</span></h4><p>Supported 300+ users across 15+ client companies, from imaging and Active Directory design to VMware and backup testing.</p></div></li>
+      <li class="reveal"><span class="yr">2014 to 2019</span><div><h4>Earlier <span>&middot; Google (contract), HostGator and others</span></h4><p>Worked with the Google Nest product development team and led a Tier 3 escalation team. Product investigations closed three months ahead of schedule, and a support evaluation program I designed saved more than $100,000 over six months in unqualified RMAs. Before that, help desk and web hosting support.</p></div></li>
+    </ol>
+  </div>
+  <div class="seeking reveal">
+    <p>I&rsquo;m most interested in work where I build, deploy and support software that uses AI, across engineering, DevOps, product, data and IT leadership. If that&rsquo;s what you&rsquo;re building, I&rsquo;d like to hear about it.</p>
+    <a class="btn primary" href="https://www.linkedin.com/in/raymond-h-81576b127/">Message me on LinkedIn</a>
+  </div>
+</section>
+
+<section id="contact" class="contact" data-jump="Contact|LinkedIn">
+  <div class="wrap">
+    <span class="eyebrow reveal">Contact</span>
+    <h2 class="reveal" style="margin-top:1rem">If you have a role or a project in mind, I&rsquo;d like to hear about it.</h2>
+    <div class="actions reveal" style="margin-top:1.6rem">
+      <a class="btn primary" href="https://www.linkedin.com/in/raymond-h-81576b127/"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M4.98 3.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5zM3 9.5h4V21H3zM9.5 9.5h3.8v1.6h.05c.53-1 1.83-2.05 3.77-2.05 4.03 0 4.78 2.65 4.78 6.1V21h-4v-5.2c0-1.24-.02-2.84-1.73-2.84-1.73 0-2 1.35-2 2.75V21h-4z"/></svg>Message me on LinkedIn</a>
+    </div>
+  </div>
+</section>
+</main>
+
+<div class="lightbox" id="lightbox" hidden role="dialog" aria-modal="true" aria-label="Video">
+  <button class="lb-x" type="button" aria-label="Close">&times;</button>
+  <button class="lb-nav prev" type="button" aria-label="Previous video">&larr;</button>
+  <figure class="lb-fig">
+    <video playsinline controls preload="metadata"></video>
+    <figcaption><span class="lb-title"></span><span class="lb-dur"></span></figcaption>
+  </figure>
+  <button class="lb-nav next" type="button" aria-label="Next video">&rarr;</button>
+</div>
+
+<div class="zoom" id="zoom" hidden role="dialog" aria-modal="true" aria-label="Screenshot, full size"><button class="lb-x" type="button" aria-label="Close">&times;</button><img alt=""><p></p></div>
+
+<div class="qj" id="qj" hidden role="dialog" aria-modal="true" aria-label="Jump to">
+  <div class="qj-box">
+    <input id="qjInput" type="text" placeholder="Jump to a project or section&hellip;" autocomplete="off" spellcheck="false" aria-label="Filter" role="combobox" aria-expanded="true" aria-controls="qjList" aria-autocomplete="list">
+    <ul id="qjList" role="listbox"></ul>
+    <div class="qj-foot"><span>&uarr;&darr; move</span><span>&crarr; go</span><span>esc close</span></div>
+  </div>
+</div>
+
+<footer class="wrap">
+  <span>&copy; 2026 Raymond Hart &middot; <a href="https://www.linkedin.com/in/raymond-h-81576b127/">LinkedIn</a></span>
+</footer>
+
+<script>if(!/static=1/.test(location.search))document.documentElement.classList.add('js');var _t=/theme=(light|dark)/.exec(location.search);if(_t)document.documentElement.setAttribute('data-theme',_t[1]);</script>
+<script>
+(function(){
+  var root=document.documentElement, btn=document.getElementById('themeBtn');
+  var reduce=matchMedia('(prefers-reduced-motion: reduce)').matches, fine=matchMedia('(pointer:fine)').matches;
+  function tok(n){return getComputedStyle(root).getPropertyValue(n).trim();}
+
+  function current(){var s=root.getAttribute('data-theme');if(s)return s;return matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';}
+  try{var saved=localStorage.getItem('mg-theme');if(saved&&!/theme=/.test(location.search))root.setAttribute('data-theme',saved);}catch(e){}
+  btn.addEventListener('click',function(){var n=current()==='dark'?'light':'dark';root.setAttribute('data-theme',n);try{localStorage.setItem('mg-theme',n);}catch(e){}});
+
+  var first=true; requestAnimationFrame(function(){requestAnimationFrame(function(){first=false;});});
+  var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){if(first){e.target.style.transition='none';}e.target.classList.add('in');io.unobserve(e.target);}});},{threshold:.12});
+  document.querySelectorAll('.reveal').forEach(function(el,i){el.style.transitionDelay=(Math.min(i%6,5)*50)+'ms';io.observe(el);});
+
+  var links=[].slice.call(document.querySelectorAll('.rail a'));
+  var marks=links.map(function(a){return document.querySelector(a.getAttribute('href'));}).filter(Boolean);
+  if(marks.length){var spy=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){links.forEach(function(a){a.classList.toggle('on',a.getAttribute('href')==='#'+e.target.id);});}});},{rootMargin:'-35% 0px -55% 0px',threshold:0});marks.forEach(function(c){spy.observe(c);});}
+
+  /* steppers: click a step, or press Zoom in to run through them once */
+  document.querySelectorAll('[data-stepper]').forEach(function(sp){
+    var fr=[].slice.call(sp.querySelectorAll('.fr')),st=[].slice.call(sp.querySelectorAll('.st')),timer=null;
+    fr.forEach(function(f){var o=f.getAttribute('data-origin');if(o)f.style.transformOrigin=o;});
+    function go(i){fr.forEach(function(f,j){f.classList.toggle('on',j===i);f.classList.toggle('past',j<i);});st.forEach(function(b,j){b.classList.toggle('on',j===i);b.setAttribute('aria-selected',j===i?'true':'false');b.tabIndex=j===i?0:-1;});}
+    st.forEach(function(b,i){b.addEventListener('click',function(){clearInterval(timer);timer=null;go(i);});
+      b.addEventListener('keydown',function(e){var n=e.key==='ArrowRight'?(i+1)%st.length:e.key==='ArrowLeft'?(i-1+st.length)%st.length:e.key==='Home'?0:e.key==='End'?st.length-1:-1;if(n<0)return;e.preventDefault();clearInterval(timer);timer=null;go(n);st[n].focus();});});
+    var play=sp.querySelector('.play');
+    if(play)play.addEventListener('click',function(){clearInterval(timer);go(0);var k=0;timer=setInterval(function(){k++;if(k>=fr.length){clearInterval(timer);timer=null;return;}go(k);},reduce?1200:2600);});
+    go(0);
+  });
+
+  /* Nexus Habitat: pick an episode to play */
+  var nxv=document.getElementById('nxVideo');
+  if(nxv){
+    var eps=[].slice.call(document.querySelectorAll('.nx-eps .ep')),nxt=document.querySelector('.nx-title'),nxd=document.querySelector('.nx-dur');
+    eps.forEach(function(b){b.addEventListener('click',function(){
+      eps.forEach(function(o){o.classList.toggle('on',o===b);o.setAttribute('aria-pressed',o===b?'true':'false');});
+      nxv.poster=b.getAttribute('data-poster');nxt.innerHTML=b.getAttribute('data-title');nxd.textContent=b.getAttribute('data-dur');
+      var src=b.getAttribute('data-src');if(src){nxv.src=src;nxv.play().catch(function(){});}
+    });});
+  }
+
+  /* Pixel Mage lightbox, with a focus trap */
+  var lb=document.getElementById('lightbox');
+  if(lb){
+    var thumbs=Array.prototype.slice.call(document.querySelectorAll('.thumb')),vid=lb.querySelector('video'),
+        ttl=lb.querySelector('.lb-title'),dur=lb.querySelector('.lb-dur'),cur=-1,lastFocus=null;
+    var focusables=[lb.querySelector('.lb-x'),lb.querySelector('.prev'),vid,lb.querySelector('.next')];
+    function show(i){
+      cur=(i+thumbs.length)%thumbs.length; var t=thumbs[cur], src=t.getAttribute('data-src');
+      ttl.textContent=t.getAttribute('data-title'); dur.textContent=src?t.getAttribute('data-dur'):'plays on the hosted site';
+      vid.poster=t.querySelector('img').src;
+      if(src){vid.src=src;vid.play().catch(function(){});}else{vid.removeAttribute('src');vid.load();}
+      lb.hidden=false; document.body.style.overflow='hidden'; lb.querySelector('.lb-x').focus();
+    }
+    function close(){vid.pause();vid.removeAttribute('src');vid.load();lb.hidden=true;document.body.style.overflow='';if(lastFocus)lastFocus.focus();}
+    thumbs.forEach(function(t,i){t.addEventListener('click',function(){lastFocus=t;show(i);});});
+    lb.querySelector('.lb-x').addEventListener('click',close);
+    lb.querySelector('.prev').addEventListener('click',function(){show(cur-1);});
+    lb.querySelector('.next').addEventListener('click',function(){show(cur+1);});
+    lb.addEventListener('click',function(e){if(e.target===lb)close();});
+    document.addEventListener('keydown',function(e){
+      if(lb.hidden)return;
+      if(e.key==='Escape')close(); else if(e.key==='ArrowLeft')show(cur-1); else if(e.key==='ArrowRight')show(cur+1);
+      else if(e.key==='Tab'){var i=focusables.indexOf(document.activeElement);e.preventDefault();var n=e.shiftKey?(i-1+focusables.length)%focusables.length:(i+1)%focusables.length;focusables[n].focus();}
+    });
+  }
+
+
+  /* click a screenshot to see it full size; every screenshot sits in a real button */
+  var zm=document.getElementById('zoom');
+  if(zm){
+    var zi=zm.querySelector('img'),zc=zm.querySelector('p'),zx=zm.querySelector('.lb-x'),zlast=null;
+    document.querySelectorAll('.plate img,.wc-media img').forEach(function(img){var b=document.createElement('button');b.type='button';b.className='zb';b.setAttribute('aria-label','See full size, '+(img.alt||'screenshot'));img.parentNode.insertBefore(b,img);b.appendChild(img);});
+    function zopen(img,from){zlast=from||document.activeElement;zi.src=img.currentSrc||img.src;zi.alt=img.alt||'';zc.textContent=img.alt||'';zm.hidden=false;document.body.style.overflow='hidden';zx.focus();}
+    function zclose(){zm.hidden=true;zi.removeAttribute('src');document.body.style.overflow='';if(zlast&&zlast.focus)zlast.focus({preventScroll:true});}
+    document.addEventListener('click',function(e){
+      if(!zm.hidden){zclose();return;}
+      var b=e.target.closest('.zb');if(b){e.preventDefault();zopen(b.querySelector('img'),b);return;}
+      var en=e.target.closest('.enl');if(en){zopen(en.closest('.frames').querySelector('.fr.on'),en);return;}
+      if(e.target.closest('.play,.st,button,a,video'))return;
+      var fr=e.target.closest('.stepper .frames');if(fr){e.preventDefault();zopen(fr.querySelector('.fr.on'),fr.querySelector('.enl'));}
+    });
+    document.addEventListener('keydown',function(e){if(zm.hidden)return;if(e.key==='Escape')zclose();else if(e.key==='Tab'){e.preventDefault();zx.focus();}});
+  }
+
+  /* quick jump: Ctrl/Cmd+K or "/", and the Menu button on phones */
+  var qj=document.getElementById('qj'),qjIn=document.getElementById('qjInput'),qjList=document.getElementById('qjList'),qjBtn=document.getElementById('jumpBtn');
+  if(qj){
+    var items=[].slice.call(document.querySelectorAll('[data-jump]')).map(function(el){var p=el.getAttribute('data-jump').split('|');return {t:p[0],d:p[1]||'',href:'#'+el.id,n:el.getAttribute('data-num')||''};});
+    items.push({n:'',t:'Top',d:'back to the map',href:'#top'});
+    var shown=items,sel=0,prevFocus=null;
+    function render(){qjList.innerHTML='';shown.forEach(function(it,i){var li=document.createElement('li');li.setAttribute('role','option');li.id='qj-o'+i;li.setAttribute('aria-selected',i===sel?'true':'false');li.className=i===sel?'on':'';li.innerHTML='<span class="n">'+it.n+'</span><span class="t">'+it.t+'</span><span class="d">'+it.d+'</span>';li.addEventListener('click',function(){go(it);});qjList.appendChild(li);});if(shown[sel])qjIn.setAttribute('aria-activedescendant','qj-o'+sel);else qjIn.removeAttribute('aria-activedescendant');var on=qjList.children[sel];if(on&&on.scrollIntoView)on.scrollIntoView({block:'nearest'});}
+    function filter(){var q=qjIn.value.trim().toLowerCase();shown=q?items.filter(function(it){return (it.t+' '+it.d).toLowerCase().indexOf(q)>-1;}):items;sel=0;render();}
+    function open(){prevFocus=document.activeElement;qj.hidden=false;qjIn.value='';filter();document.body.style.overflow='hidden';setTimeout(function(){qjIn.focus();},0);}
+    function shut(back){qj.hidden=true;document.body.style.overflow='';if(back!==false&&prevFocus&&prevFocus.focus)prevFocus.focus({preventScroll:true});}
+    function go(it){shut(false);var el=document.querySelector(it.href);if(el){var top=el.getBoundingClientRect().top+window.pageYOffset-72;if(!el.hasAttribute('tabindex'))el.setAttribute('tabindex','-1');el.focus({preventScroll:true});setTimeout(function(){window.scrollTo({top:top,behavior:reduce?'auto':'smooth'});},0);history.replaceState(null,'',it.href);}}
+    qjBtn.addEventListener('click',open);
+    qj.addEventListener('click',function(e){if(e.target===qj)shut();});
+    qjIn.addEventListener('input',filter);
+    document.addEventListener('keydown',function(e){
+      var typing=/^(INPUT|TEXTAREA)$/.test(document.activeElement.tagName)&&document.activeElement!==qjIn;
+      if((e.key==='k'||e.key==='K')&&(e.ctrlKey||e.metaKey)){e.preventDefault();if(qj.hidden)open();else shut();return;}
+      if(e.key==='/'&&qj.hidden&&!typing){e.preventDefault();open();return;}
+      if(qj.hidden)return;
+      if(e.key==='Escape')shut();
+      else if(e.key==='Tab'){e.preventDefault();qjIn.focus();}
+      else if(e.key==='ArrowDown'){e.preventDefault();sel=Math.min(sel+1,shown.length-1);render();}
+      else if(e.key==='ArrowUp'){e.preventDefault();sel=Math.max(sel-1,0);render();}
+      else if(e.key==='Enter'){e.preventDefault();if(shown[sel])go(shown[sel]);}
+    });
+  }
+
+})();
+</script>
+</body>
+</html>
